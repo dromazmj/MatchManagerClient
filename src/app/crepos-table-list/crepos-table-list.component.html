@@ -1,0 +1,20 @@
+<div class="panel-wrapper">
+  <div class="panel panel-transparent">
+    <div class="panel-heading underline-heading">
+        Tables
+    </div>
+    <div class="panel-body">
+      <div class="list">
+        <mat-button-toggle-group vertical style="width: 100%">
+            <!-- <div *ngFor="let cReposTable of cReposTables"> -->
+            <!-- <mat-action-list *ngFor="let cReposTable of cReposTables"> -->
+                <mat-button-toggle matRipple (click)="showMatchRuleSets(cReposTable)" *ngFor="let cReposTable of cReposTables">
+                    {{cReposTable.tableName}}
+                </mat-button-toggle>
+            <!-- </mat-action-list> -->
+              <!-- </div> -->
+        </mat-button-toggle-group>
+      </div>
+    </div>
+  </div>
+</div>

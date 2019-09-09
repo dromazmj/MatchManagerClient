@@ -1,0 +1,34 @@
+
+<ng-template #content let-c="close" let-d="dismiss" let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Create Report</h4>
+    </div>
+    <div class="modal-body">
+      <app-create-report [mMatchReport]="selectedMatchReport"></app-create-report>
+    </div>
+</ng-template>
+<div class="panel-wrapper" style="height: 100%">
+  <div class="panel panel-transparent">
+    <div class="panel-heading underline-heading">
+      <h3 class="panel-title pull-left">Match Reports</h3>
+    </div>
+    <div class="panel-body">
+      <button class="btn btn-default pull-left" (click)="showMatchReport(content)">Show Match Report</button>
+      <button class="btn btn-default pull-right" (click)="updateMatchReport(content)">Edit Match Report</button>
+      <button class="btn btn-default pull-left" (click)="deleteMatchReport(content)">Deleted Match Report</button>
+      <button class="btn btn-default pull-right" (click)="createMatchReport(content)">New</button>
+      
+      <div class="clearfix"></div>
+    <div class="list">
+      <mat-button-toggle-group vertical style="width: 100%">
+          <!-- <div *ngFor="let cReposTable of cReposTables"> -->
+          <!-- <mat-action-list *ngFor="let cReposTable of cReposTables"> -->
+              <mat-button-toggle matRipple (click)="setSelectedMatchReport(mMatchReport)" *ngFor="let mMatchReport of mMatchReports">
+                  {{mMatchReport.matchReportName}}
+              </mat-button-toggle>
+          <!-- </mat-action-list> -->
+            <!-- </div> -->
+      </mat-button-toggle-group>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+
+<div class="panel-wrapper">
+  <div class="panel panel-transparent">
+    <div class="panel-heading underline-heading">
+        Match Sets
+    </div>
+    <div class="panel-body">
+      <div class="list">
+        <mat-button-toggle-group vertical style="width: 100%">
+          <mat-button-toggle matRipple (click)="showMatchColumns(cReposMatchRule)" *ngFor="let cReposMatchRule of cReposMatchRules">
+              {{cReposMatchRule.ruleNo}} : {{cReposMatchRule.matchPurposeStr}}({{cReposMatchRule.matchLevelStr}})
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+  </div>
+</div>

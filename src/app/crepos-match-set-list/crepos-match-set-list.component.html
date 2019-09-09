@@ -1,0 +1,16 @@
+<div class="panel-wrapper">
+    <div class="panel panel-transparent">
+      <div class="panel-heading underline-heading">
+          Match Sets
+      </div>
+      <div class="panel-body">
+        <div class="list">
+          <mat-button-toggle-group vertical style="width: 100%">
+            <mat-button-toggle matRipple (click)="showMatchRules(cReposMatchSet)" *ngFor="let cReposMatchSet of cReposMatchSets">
+                {{cReposMatchSet.matchSetName}}
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+  </div>

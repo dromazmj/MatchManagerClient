@@ -1,0 +1,53 @@
+<div class="full-height">
+  <div class="toolBarDiv">
+    <span class="toolBarTitle title-text ng-binding">
+      MDM Package Viewer
+    </span>
+  </div> 
+  <!-- <div ui-view class="ng-scope"> -->
+  <div ui-view class="mdm-view-container">
+    <div class='row'>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 full_height ng-scope list" ng-controller="listCtrl" >
+        <div class="panel-wrapper" style="height: 100%">
+          <div class="panel panel-transparent">
+            <div class="panel-heading underline-heading">
+              <h3 class="panel-title pull-left">Select A Package</h3>
+            </div>
+            <div class="panel-body">
+              <mat-form-field>
+                <mat-select (selectionChange)="showPackage($event)">
+                  <mat-option *ngFor="let siperianObject of siperianObjects" [value]="siperianObject">
+                    {{siperianObject.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="panel-wrapper" style="height: 100%">
+          <div class="panel panel-transparent">
+            <div class="panel-heading underline-heading">
+              <h3 class="panel-title pull-left">Package</h3>
+            </div>
+            <div class="panel-body">
+              <table datatable [dtOptions]="dtOptions" [dtTrigger]="tTrigger" class="row-border hover" style="width:100%">
+                <thead>
+                  <tr>
+                    <td *ngFor="let column of columns">{{column}}</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of rows">
+                    <td *ngFor="let col of row">{{col}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

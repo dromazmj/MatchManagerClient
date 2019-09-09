@@ -1,0 +1,105 @@
+<!-- <mat-card>
+    <mat-card-header>Select Columns To Display</mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let column of cReposColumns">
+            <input
+              type="checkbox"
+              name="selectedColumns[]"
+              value="{{column.columnName}}"
+              (click)="toggleSelection(column, false)"
+            > {{column.columnName}}
+        </mat-list-item>
+      </mat-list>
+      <mat-list>
+          <mat-list-item *ngFor="let matchColumn of cReposMatchColumns">
+              <input
+                type="checkbox"
+                name="selectedMatchColumns[]"
+                value="{{matchColumn.matchColumnName}}"
+                (click)="toggleMatchSelection(matchColumn, true)"
+              > {{matchColumn.matchColumnName}}
+          </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+  </mat-card> -->
+
+<div class="panel-wrapper">
+    <div class="panel panel-transparent">
+      <div class="panel-heading underline-heading">
+          Columns & Match Columns
+      </div>
+      <div class="panel-body">
+      <div class="list">
+        <mat-selection-list *ngFor="let column of cReposColumns">
+          <mat-list-option mat-list-item (click)="toggleSelection(column, false)" value="{{column.columnName}}" name="selectedColumns[]">
+              {{column.columnName}}
+          </mat-list-option>
+        </mat-selection-list>
+        <mat-selection-list *ngFor="let matchColumn of cReposMatchColumns">
+          <mat-list-option mat-list-item (click)="toggleMatchSelection(matchColumn, true)" value="{{matchColumn.matchColumnName}}" name="selectedMatchColumns[]">
+              {{matchColumn.matchColumnName}}
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<!-- <div class="panel-wrapper">
+  <div class="panel panel-transparent">
+    <div class="panel-heading underline-heading">
+        Select Columns To Display
+    </div>
+    <div class="panel-body">
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">Columns</div>
+          <div class="panel-body">
+            <mat-action-list *ngFor="let column of cReposColumns">
+              <input
+                type="checkbox"
+                name="selectedColumns[]"
+                value="{{column.columnName}}"
+                (click)="toggleSelection(column, false)"
+              > {{column.columnName}}
+            </mat-action-list>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">Match Columns</div>
+          <div class="panel-body">
+            <mat-action-list *ngFor="let matchColumn of cReposMatchColumns">
+              <input
+                type="checkbox"
+                name="selectedMatchColumns[]"
+                value="{{matchColumn.matchColumnName}}"
+                (click)="toggleMatchSelection(matchColumn, true)"
+              > {{matchColumn.matchColumnName}}
+            </mat-action-list>
+          </div>
+        </div>
+      </div>
+        <div class="list">
+          <li *ngFor="let column of cReposColumns">
+            <input
+              type="checkbox"
+              name="selectedColumns[]"
+              value="{{column.columnName}}"
+              (click)="toggleSelection(column, false)"
+            > {{column.columnName}}
+          </li>
+        </div>
+        <div class="list">
+          <li *ngFor="let matchColumn of cReposMatchColumns">
+            <input
+              type="checkbox"
+              name="selectedMatchColumns[]"
+              value="{{matchColumn.matchColumnName}}"
+              (click)="toggleMatchSelection(matchColumn, true)"
+            > {{matchColumn.matchColumnName}}
+          </li>
+        </div>
+    </div>
+  </div>
+</div> -->

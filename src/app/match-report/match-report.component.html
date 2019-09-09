@@ -1,0 +1,38 @@
+
+<div class="full-height">
+  <div class="toolBarDiv">
+    <span class="toolBarTitle title-text ng-binding">
+      Match Reports
+    </span>
+  </div> 
+  <!-- <div ui-view class="ng-scope"> -->
+  <div ui-view class="mdm-view-container">
+    <div class='row'>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 full_height ng-scope list" ng-controller="listCtrl" >
+        <app-match-report-list (someEvent)="showMatchReport($event)"></app-match-report-list>
+      </div>
+      <div class="col-md-6">
+        <app-bar-chart [chartDatasets]="chartDatasets" [chartLabels]="chartLabels" [chartColors]="chartColors" [heading]="barChartheading"></app-bar-chart>
+      </div>
+      <div class="col-md-3">
+        <app-pie-chart [pieChartDatasets]="pieChartDatasets" [heading]="pieChartheading"></app-pie-chart>
+      </div>
+    </div>
+    <div class='row h-100' >
+      <div class="col-md-12">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="tTrigger" class="row-border hover" style="width:100%">
+          <thead>
+            <tr>
+                <td *ngFor="let column of columns">{{column}}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of rows">
+                <td *ngFor="let col of row">{{col}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

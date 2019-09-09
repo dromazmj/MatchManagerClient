@@ -1,0 +1,10 @@
+<div class="infaOnglet">
+  <ul class="infaWsTabs-nav">
+    <li routerLinkActive="active" *ngFor="let menuItem of menuItems">
+      <a class="tabNoIco" [routerLink]="[menuItem.path]">
+        <span class="home-menu infaWsLabel"></span>
+        <span class="infa-left-nav-label">{{menuItem.title}}</span>
+      </a>
+    </li>
+  </ul>
+</div>

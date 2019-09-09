@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-6 mx-auto my-5">
+      <div style="display: block">
+        <canvas mdbChart 
+          [chartType]="chartType" 
+          [datasets]="chartDatasets" 
+          [labels]="chartLabels" 
+          [colors]="chartColors" 
+          [options]="chartOptions"
+          [legend]="true" 
+          (chartHover)="chartHovered($event)" 
+          (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mx-auto text-center">
+      <div class="row">
+        <div class="col-md-4">
+          <button class="btn btn-primary waves-light" mdbWavesEffect (click)="updateOnlyDatasets()">Update only datasets</button>
+  
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-primary waves-light" mdbWavesEffect (click)="updateOnlyLabels()">Update only labels</button>
+  
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-primary waves-light" mdbWavesEffect (click)="updateDatasetsAndLabels()">Update datasets and labels</button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <div class="row">
+        <div class="col-md-6 text-center">
+          <button class="btn btn-primary waves-light" mdbWavesEffect (click)="updateChartMonthsLabels()">Update months labels</button>
+  
+        </div>
+        <div class="col-md-6 text-center">
+          <button class="btn btn-primary waves-light" mdbWavesEffect (click)="updateChartColors()">Update chart colors</button>
+        </div>
+      </div>
+    </div>
+  </div>
