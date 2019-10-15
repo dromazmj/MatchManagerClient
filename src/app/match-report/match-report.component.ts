@@ -84,7 +84,7 @@ public chartDatasets: Array<any> = [{data: [], label:["Match Rule Bar Chart"]}];
   ) { }
 
   ngOnInit() {
-    this.cReposTableService.getBO().subscribe(data => {
+    this.cReposTableService.getBOCReposTables().subscribe(data => {
       console.log(data);
       this.cReposTables = data;
     });

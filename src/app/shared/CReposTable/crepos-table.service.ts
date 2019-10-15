@@ -13,11 +13,11 @@ export class CReposTableService {
   constructor(private http: HttpClient) {
   }
 
-  getBO(): Observable<CReposTable[]> {
+  public getBOCReposTables(): Observable<CReposTable[]> {
     return this.http.get<CReposTable[]>('//localhost:8034/getBOCReposTables');
   }
 
-  getMatchData(table, rowidMatchRule, cols): Observable<MatchData> {
+  public getMatchData(table, rowidMatchRule, cols): Observable<MatchData> {
     return this.http.get<MatchData>(`//localhost:8034/getMatchData?table=${table}&rowidMatchRule=${rowidMatchRule}&cols=${cols.join(",")}`);
 
     // let params = new HttpParams();
@@ -28,11 +28,11 @@ export class CReposTableService {
   }
 
   
-  getMatchDataWithMatchCol(table, rowidMatchRule, cols, matchCols): Observable<any> {
+  public getMatchDataWithMatchCol(table, rowidMatchRule, cols, matchCols): Observable<any> {
     return this.http.get<any>(`//localhost:8034/getMatchDataWithMatchCol?table=${table}&rowidMatchRule=${rowidMatchRule}&rowidMatchCols=${matchCols}&cols=${cols.join(",")}`);
   }
 
-  getAllMatchTableData(): Observable<MatchTableData[]> {
+  public getAllMatchTableData(): Observable<MatchTableData[]> {
     return this.http.get<MatchTableData[]>(`//localhost:8034/getAllMatchTableData`);
   }
 }

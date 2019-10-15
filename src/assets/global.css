@@ -21832,7 +21832,7 @@ label {
 }
 @font-face {
     font-family: FuturaPT-Medium;
-    src: url(/src/assets/fonts/futura-pt/FTN55.otf) format("opentype"), url(/src/assets../tmp/fonts/futura-pt/FTN55.otf) format("opentype");
+    src: url(/src/assets/fonts/futura-pt/FTN55.otf) format("opentype"), url(/src/assets/fonts/futura-pt/FTN55.otf) format("opentype");
     font-style: normal;
     font-weight: 400;
 }

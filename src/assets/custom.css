@@ -4666,15 +4666,15 @@ task-inbox .pager-row-wrapper .pager-row-col:nth-of-type(2) span[id$=items-per-p
 @font-face {
     font-family: FuturaPT-Demi;
     src: url(/src/assets/fonts/futura-pt/FTN65.otf) format("opentype");
-    src: url(/src/assets/fonts/futura-pt/FTN65.eot) format("opentype");
-    src: url(/src/assets/fonts/futura-pt/FTN65.eot?#iefix) format("opentype")
+    src: url(/src/assets/fonts/futura-pt/FTN65.otf) format("opentype");
+    src: url(/src/assets/fonts/futura-pt/FTN65.oft?#iefix) format("opentype")
 }
 
 @font-face {
     font-family: FuturaPT-Medium;
     src: url(/src/assets/fonts/futura-pt/FTN55.otf) format("opentype");
-    src: url(/src/assets/fonts/futura-pt/FTN55.eot) format("opentype");
-    src: url(/src/assets/fonts/futura-pt/FTN55.eot?#iefix) format("opentype");
+    src: url(/src/assets/fonts/futura-pt/FTN55.otf) format("opentype");
+    src: url(/src/assets/fonts/futura-pt/FTN55.otf) format("opentype");
     font-style: normal;
     font-weight: 400
 }
@@ -4682,8 +4682,8 @@ task-inbox .pager-row-wrapper .pager-row-col:nth-of-type(2) span[id$=items-per-p
 @font-face {
     font-family: FuturaPT-Book;
     src: url(/src/assets/fonts/futura-pt/FTN45.otf) format("opentype");
-    src: url(/src/assets/fonts/futura-pt/FTN45.eot) format("opentype");
-    src: url(/src/assets/fonts/futura-pt/FTN45.eot?#iefix) format("opentype");
+    src: url(/src/assets/fonts/futura-pt/FTN45.otf) format("opentype");
+    src: url(/src/assets/fonts/futura-pt/FTN45.otf) format("opentype");
     font-style: normal;
     font-weight: 400
 }

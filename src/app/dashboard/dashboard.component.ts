@@ -163,7 +163,7 @@ export class DashboardComponent implements OnInit {
 
   async getBOTables() {
     return new Promise(resolve => {
-      this.creposTableService.getBO().subscribe((creposTables: CReposTable[]) => {
+      this.creposTableService.getBOCReposTables().subscribe((creposTables: CReposTable[]) => {
         resolve(creposTables);
       })
     })

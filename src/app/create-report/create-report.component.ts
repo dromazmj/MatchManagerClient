@@ -37,8 +37,7 @@ export class CreateReportComponent implements OnInit {
   matchColumnColumns: CReposColumn[] = [];
 
 
-  @ViewChild(DataTableDirective) 
-  dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   @ViewChild('matchReportName') matchReportName: ElementRef;
 
   @Input() mMatchReport: MMatchReport;
@@ -60,7 +59,8 @@ export class CreateReportComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.authenticationService.currentUserValue)
-    this.creposTableService.getBO().subscribe(data => {
+    this.creposTableService.getBOCReposTables().subscribe(data => {
+      console.log(data);
       this.creposTables = data;
       if (this.mMatchReport == undefined) {
         this.mMatchReport = new MMatchReport();
