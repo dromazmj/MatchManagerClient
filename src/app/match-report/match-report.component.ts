@@ -10,7 +10,8 @@ import { MMatchReportService } from '../shared/MMatchReport/mmatch-report.servic
 import { MMatchReport } from '../models/mmatchreport.model';
 import { ChartsModule } from 'angular-bootstrap-md';
 import { MatchRowService } from '../shared/MatchRow/match-row.service';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 export interface PeriodicElement {
