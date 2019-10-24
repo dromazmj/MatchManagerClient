@@ -54,11 +54,9 @@ export class MatchReportListComponent implements OnInit {
 
   protected deleteMatchReport() {
     this.mMatchReportService.deleteMatchReportService(this.selectedMatchReport.rowidMatchReport).subscribe(result => {
-      if (result == "SUCCESS") {
-        alert("DELETE SUCCESSFULL");
-      } else {
-        alert("FAILED TO DELETE PLEASE CONTACT SYSTEM ADMIN");
-      }
+      location.reload();
+    }, () => {
+      alert("ERROR deleting Match Report. Please contact system admin.");
     })
   }
 

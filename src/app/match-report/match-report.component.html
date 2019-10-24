@@ -20,7 +20,7 @@
     </div>
     <div class='row h-100' >
       <div class="col-md-12">
-        <table datatable [dtOptions]="dtOptions" [dtTrigger]="tTrigger" class="row-border hover" style="width:100%">
+        <!-- <table datatable id="example-datatable" [dtOptions]="dtOptions" [dtTrigger]="tTrigger" class="row-border hover" style="width:100%">
           <thead>
             <tr>
                 <td *ngFor="let column of columns">{{column}}</td>
@@ -30,8 +30,33 @@
             <tr *ngFor="let row of rows">
                 <td *ngFor="let col of row">{{col}}</td>
             </tr>
-          </tbody>
-        </table>
+          </tbody>4
+        </table> -->
+        <div class="example-container mat-elevation-z8">
+          <div class="example-loading-shade"
+               *ngIf="isLoadingResults || isRateLimitReached">
+            <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+            <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+              GitHub's API rate limit has been reached. It will be reset in one minute.
+            </div>
+          </div>
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+          </mat-form-field>
+          <table mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" class="mat-elevation-z8">
+            <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+              <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+              <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+        <div>
+          <button mat-raised-button (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Talha'}})">Excel</button>
+        </div>
       </div>
     </div>
   </div>

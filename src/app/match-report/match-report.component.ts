@@ -4,15 +4,27 @@ import { CReposTable } from './../models/crepostable.model';
 import { CReposMatchSet } from './../models/creposmatchset.model';
 import { CReposMatchRule } from './../models/creposmatchrule.model';
 import { CReposColumn } from './../models/creposcolumn.model';
-import { Subject } from 'rxjs';
-import { DataTableDirective } from 'angular-datatables';
 import { CReposMatchColumn } from './../models/creposmatchcolumn.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MMatchReportService } from '../shared/MMatchReport/mmatch-report.service';
 import { MMatchReport } from '../models/mmatchreport.model';
 import { ChartsModule } from 'angular-bootstrap-md';
-import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { MatchRowService } from '../shared/MatchRow/match-row.service';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
+
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+
+const ELEMENT_DATA: PeriodicElement[] = [
+  // {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
+];
+
+
 @Component({
   selector: 'app-match-report',
   templateUrl: './match-report.component.html',
@@ -33,21 +45,24 @@ export class MatchReportComponent implements OnInit {
   selectedColumns : CReposColumn[];
   selectedMatchColumns : CReposMatchColumn[];
 
-  @ViewChild(DataTableDirective) 
-  dtElement: DataTableDirective;
+  rows: any = [];
+  columns: any = [];
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  // displayedColumns: string[] = ['name', 'weight', 'symbol', 'position'];
+  displayedColumns: string[] = [];
 
-  dtOptions: any = {};
-  tTrigger: Subject<any> = new Subject();
+  columnsToDisplay: string[] = this.displayedColumns.slice();
+  data: PeriodicElement[] = ELEMENT_DATA;
+  dataSource = new MatTableDataSource(this.data);
+  isLoadingResults: boolean = false;
 
-  rows: any;
-  columns: any;
+
+
   public pieChartDatasets: Array<any> = [
     { data: [], label: 'My First dataset' }
   ];
 
-public chartDatasets: Array<any> = [{data: [], label:["Match Rule Bar Chart"]}];  
-  //   { data: [65, 59, 80, 81, 56, 55, 40], label: 'My First dataset' }
-  // ];
+  public chartDatasets: Array<any> = [{data: [], label:["Match Rule Bar Chart"]}];  
 
   public chartLabels: Array<any> = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Red1', 'Blue2', 'Yellow3', 'Green4', 'Purple5'];
 
@@ -55,82 +70,36 @@ public chartDatasets: Array<any> = [{data: [], label:["Match Rule Bar Chart"]}];
 
   barChartheading: string = '';
   pieChartheading: string = '';
-    // {
-    //   backgroundColor: [
-    //     'rgba(255, 99, 132, 0.2)',
-    //     'rgba(54, 162, 235, 0.2)',
-    //     'rgba(255, 206, 86, 0.2)',
-    //     'rgba(75, 192, 192, 0.2)',
-    //     'rgba(153, 102, 255, 0.2)',
-    //     'rgba(255, 159, 64, 0.2)'
-    //   ],
-    //   borderColor: [
-    //     'rgba(255,99,132,1)',
-    //     'rgba(54, 162, 235, 1)',
-    //     'rgba(255, 206, 86, 1)',
-    //     'rgba(75, 192, 192, 1)',
-    //     'rgba(153, 102, 255, 1)',
-    //     'rgba(255, 159, 64, 1)'
-    //   ],
-    //   borderWidth: 2,
-    // }];
 
 
   constructor(
     private cReposTableService: CReposTableService,
     private mMatchReportService: MMatchReportService,
     private matchRowService: MatchRowService,
-    private spinner: Ng4LoadingSpinnerService
   ) { }
 
   ngOnInit() {
     this.cReposTableService.getBOCReposTables().subscribe(data => {
-      console.log(data);
       this.cReposTables = data;
     });
-    this.tTrigger.next();
-    this.setDatatablesOptions();
+    this.dataSource.paginator = this.paginator;
   }
 
-  private setDatatablesOptions() {
-    this.dtOptions = {
-      // Declare the use of the extension in the dom parameter
-      dom: 'Bfrtip',
-      // Configure the buttons
-      buttons: [
-        'copy',
-        'print',
-        'excel',
-        'pdf'
-      ]
-    };
-  }
-
-  ngOnChanges() {
-    
-  }
 
   private showMatchReport(mMatchReport: MMatchReport) {
-    this.spinner.show();
+    this.isLoadingResults = true;
     this.barChartheading = mMatchReport.matchReportName + " Bar Chart"
     this.pieChartheading = mMatchReport.matchReportName + " Pie Chart"
     this.mMatchReportService.getMatchReportData(mMatchReport.rowidMatchReport).subscribe(data => {
+
       this.rows = data['data'];
       this.columns = data['columns'];
-      if (this.dtElement.dtInstance == undefined) {
-        this.tTrigger.next();
-      }
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        // Destroy the table first
-        dtInstance.destroy();
-        // Call the dtTrigger to rerender again
-        this.tTrigger.next();
-        this.spinner.hide();
-      });
+      this.displayedColumns = this.columns;
+      this.setupMatchData();
 
-    })
+    });
+
     let rowidMatchSet = mMatchReport.rowidMatchSet;
-    console.log(rowidMatchSet);
     this.matchRowService.getAllMatchRulesChartData(mMatchReport.rowidTable, rowidMatchSet).subscribe(matchRuleChartData => {
       this.setBarChartOptions(matchRuleChartData);
     });
@@ -139,6 +108,21 @@ public chartDatasets: Array<any> = [{data: [], label:["Match Rule Bar Chart"]}];
       this.pieChartDatasets = [{data: [matchRuleChartData.matchRuleMatchCount, matchRuleChartData.totalMatchRuleCount]}];
     })
     
+  }
+
+  private setupMatchData() {
+    let data = [];
+    this.rows.forEach((row, i) => {
+      let newRow = {};
+      row.forEach((element, j) => {
+        newRow[this.columns[j]] = element;
+      });
+      data.push(newRow);
+    });
+    this.columnsToDisplay = this.columns.slice();
+    this.data = data;
+    this.dataSource.data = this.data;
+    this.isLoadingResults = false;
   }
 
   private setBarChartOptions(matchRuleChartData) {
@@ -190,35 +174,15 @@ public chartDatasets: Array<any> = [{data: [], label:["Match Rule Bar Chart"]}];
     this.cReposMatchColumns = matchColumns;
   }
 
-  public showMatchTable() {
-    
-    let cols = [];
-    let matchCols = "";
-    if (this.selectedColumns != undefined) this.selectedColumns.forEach((column) => {cols.push(column['columnName'])});
-    if (this.selectedMatchColumns != undefined) this.selectedMatchColumns.forEach((column) => {matchCols += column['rowidMatchColumn'] + ','});
-
-    matchCols = matchCols.substring(0, matchCols.length-1);
-    this.cReposTableService.getMatchDataWithMatchCol(this.selectedTable['tableName'], this.selectedMatchRule['rowidMatchRule'], cols, matchCols).subscribe(data => {
-      this.rows = data['data'];
-      this.columns = data['columns'];
-      if (this.dtElement.dtInstance == undefined) {
-        this.tTrigger.next();
-      }
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        // Destroy the table first
-        dtInstance.destroy();
-        // Call the dtTrigger to rerender again
-        this.tTrigger.next();
-      });
-
-    })
-  }
-
   public setSelectedColumns(selectedColumns) {
     this.selectedColumns = selectedColumns;
   }
 
   public setSelectedMatchColumns(selectedMatchColumns) {
     this.selectedMatchColumns = selectedMatchColumns;
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

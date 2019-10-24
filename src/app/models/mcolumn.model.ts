@@ -1,10 +1,10 @@
 import { MColumnComponent } from './mcolumncomponent.model';
 
 export class MColumn {
-    constructor(rowidColumn: string) {
-        this.rowidColumn = rowidColumn;
+    constructor(rowidMcolumn: string) {
+        this.rowidMcolumn = rowidMcolumn;
     }
-    rowidColumn: string;
+    rowidMcolumn: string;
     mcolumnComponents: MColumnComponent[];
 
 }

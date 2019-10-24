@@ -16,7 +16,7 @@ export class PackageViewerComponent implements OnInit {
   private siperianObjects: SiperianObject[];
   loading: boolean = false;
 
-  @ViewChild(DataTableDirective) 
+  @ViewChild(DataTableDirective, {static: false}) 
   dtElement: DataTableDirective;
   dtOptions: any = {};
 

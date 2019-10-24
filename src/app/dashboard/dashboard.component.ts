@@ -7,6 +7,7 @@ import { MatchRowService } from '../shared/MatchRow/match-row.service';
 import { MatchRow } from '../models/matchrow.model';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 
 export interface Tile {
@@ -56,7 +57,7 @@ export class DashboardComponent implements OnInit {
   // rows: any = [{'creposTable': '', 'creposMatchSet': '', 'creposMatchRule': '', 'numMatches': ''}];
   rows: any;
 
-  @ViewChild(DataTableDirective) 
+  @ViewChild(DataTableDirective, {static: false}) 
   dtElement: DataTableDirective;
 
   dtOptions: any = {};
@@ -66,12 +67,15 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private creposTableService: CReposTableService,
-    private matchRowService: MatchRowService
+    private matchRowService: MatchRowService,
+    private spinner: Ng4LoadingSpinnerService
   ) { }
 
   ngOnInit() {
+    this.spinner.show();
     this.creposTableService.getAllMatchTableData().subscribe(matchTablesData => {
       this.setBarChartData(matchTablesData);
+      this.spinner.hide();
     });
     this.setDatatableData();
     this.tTrigger.next();

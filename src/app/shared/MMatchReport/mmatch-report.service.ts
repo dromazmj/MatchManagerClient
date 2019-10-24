@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MMatchReport } from 'src/app/models/mmatchreport.model';
 import { CReposMatchRule } from 'src/app/models/creposmatchrule.model';
+import { MMatchColumnService } from '../MMatchColumn/m-match-column.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class MMatchReportService {
 
   putMatchReportService(mMatchReport): Observable<MMatchReport> {
     return this.http.put<MMatchReport>('//localhost:8034/MMatchReport', mMatchReport);
+  }
+
+  saveWithRollbackWithChildren(mMatchReport: MMatchReport): Observable<MMatchReport> {
+    return this.http.post<MMatchReport>("//localhost:8034/MMatchReportWithChildren", mMatchReport);
   }
 
   postMatchReportService(mMatchReport) {

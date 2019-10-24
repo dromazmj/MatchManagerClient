@@ -14,6 +14,10 @@ import { MColumn } from '../models/mcolumn.model';
 import { MColumnComponent } from '../models/mcolumncomponent.model';
 import { MMatchColumnComponent } from '../models/mmatchcolumncomponent.model';
 import { AuthenticationService } from '../_service/authentication/authentication.service';
+import { MColumnService } from '../shared/MColumn/m-column.service';
+import { MColumnComponentService } from '../shared/MColumnComponent/m-column-component.service';
+import { MMatchColumnService } from '../shared/MMatchColumn/m-match-column.service';
+import { MMatchColumnComponentService } from '../shared/MMatchColumnComponent/m-match-column-component.service';
 
 
 @Component({
@@ -36,9 +40,11 @@ export class CreateReportComponent implements OnInit {
   selectedMatchColumns : CReposMatchColumn[] = [];
   matchColumnColumns: CReposColumn[] = [];
 
+  updatingReport: boolean = false;
 
-  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
-  @ViewChild('matchReportName') matchReportName: ElementRef;
+
+  @ViewChild(DataTableDirective, {static: false}) dtElement: DataTableDirective;
+  @ViewChild('matchReportName', {static: false}) matchReportName: ElementRef;
 
   @Input() mMatchReport: MMatchReport;
 
@@ -53,14 +59,15 @@ export class CreateReportComponent implements OnInit {
   constructor(
     private creposTableService: CReposTableService,
     private mMatchReportService: MMatchReportService,
-    private authenticationService: AuthenticationService
-    
+    private authenticationService: AuthenticationService,
+    private mColumnService: MColumnService,
+    private mColumnComponentService: MColumnComponentService,
+    private mMatchColumnService: MMatchColumnService,
+    private mMatchColumnComponentService: MMatchColumnComponentService
   ) { }
 
   ngOnInit() {
-    console.log(this.authenticationService.currentUserValue)
     this.creposTableService.getBOCReposTables().subscribe(data => {
-      console.log(data);
       this.creposTables = data;
       if (this.mMatchReport == undefined) {
         this.mMatchReport = new MMatchReport();
@@ -75,6 +82,7 @@ export class CreateReportComponent implements OnInit {
   }
 
   protected setFormFields() {
+    this.updatingReport = true;
     this.setSelectedBaseObject();
     this.matchReportName.nativeElement.value = this.mMatchReport.matchReportName;
   }
@@ -93,8 +101,7 @@ export class CreateReportComponent implements OnInit {
     this.creposColumns = this.selectedTable.creposColumns;
     this.mMatchReport.mcolumnComponents.forEach(mcolumnComponent => {
         this.selectedTable.creposColumns.forEach(creposColumn => {
-          console.log(creposColumn.rowidColumn + ":" + mcolumnComponent.mcolumn.rowidColumn);
-          if (creposColumn.rowidColumn == mcolumnComponent.mcolumn.rowidColumn) {
+          if (creposColumn.rowidColumn == mcolumnComponent.mcolumnComponentKey.rowidMcolumn) {
             this.selectedColumns.push(creposColumn);
           }
         })
@@ -129,7 +136,7 @@ export class CreateReportComponent implements OnInit {
 
     this.mMatchReport.mmatchColumnComponents.forEach(mmatchColumnComponent => {
         this.selectedMatchRule.creposMatchRuleComps.forEach(creposMatchRuleComp => {
-          if (creposMatchRuleComp.creposMatchColumn.rowidMatchColumn == mmatchColumnComponent.mmatchColumn.rowidMatchColumn) {
+          if (creposMatchRuleComp.creposMatchColumn.rowidMatchColumn == mmatchColumnComponent.mmatchColumnComponentKey.rowidMmatchColumn) {
             this.selectedMatchColumns.push(creposMatchRuleComp.creposMatchColumn);
           }
         })
@@ -137,14 +144,11 @@ export class CreateReportComponent implements OnInit {
   }
 
   onSelectMatchRule(event) {
-    console.log(event.source.value);
     let matchColumns = [];
     event.source.value['creposMatchRuleComps'].forEach(creposMatchRuleComp => {
-      console.log(creposMatchRuleComp.creposMatchColumn);
       matchColumns.push(creposMatchRuleComp.creposMatchColumn);
     });
     this.creposMatchColumns = matchColumns;
-    console.log(this.creposMatchColumns);
   }
 
   public showMatchRuleSets(cReposTable) {
@@ -199,15 +203,26 @@ export class CreateReportComponent implements OnInit {
     })
   }
 
+
+
   protected saveReport() {
     if (this.validateAllInput() == false) {
       return;
     }
 
     this.setSavedMatchReport();
-    console.log(this.savedMatchReport);
 
-    this.mMatchReportService.postMatchReportService(this.savedMatchReport).subscribe(mMatchReport => {
+    if (this.updatingReport) {
+      this.mMatchReportService.putMatchReportService(this.savedMatchReport).subscribe(mMatchReport =>  {
+        if (mMatchReport == undefined) {
+          alert("Error Submitting Match Report. Please contact your system administrator.");
+        } else {
+          alert("Match Report saved successfully.");
+          location.reload();
+        }
+      })
+    } else {
+      this.mMatchReportService.postMatchReportService(this.savedMatchReport).subscribe(mMatchReport => {
         if (mMatchReport == undefined) {
           alert("Error Submitting Match Report. Please contact your system administrator.");
         } else {
@@ -215,12 +230,20 @@ export class CreateReportComponent implements OnInit {
           location.reload();
         }
     });
+    }
   }
+
 
   private setSavedMatchReport() {
     this.savedMatchReport.mmatchColumnComponents = [];
     this.savedMatchReport.mcolumnComponents = [];
-    console.log(this.mMatchReport.rowidMatchReport);
+    this.setSavedMMatchReportAttributes();
+    this.setMMatchColumnComponents();
+    this.setMColumnComponents();
+    console.log(this.savedMatchReport);
+  }
+
+  private setSavedMMatchReportAttributes() {
     if (this.mMatchReport.rowidMatchReport != undefined) {this.savedMatchReport.rowidMatchReport = this.mMatchReport.rowidMatchReport; }
 
     this.savedMatchReport.rowidUser = this.authenticationService.currentUserValue.rowidUser;
@@ -228,14 +251,16 @@ export class CreateReportComponent implements OnInit {
     this.savedMatchReport.rowidTable = this.selectedTable.rowidTable;
     this.savedMatchReport.rowidMatchRule = this.selectedMatchRule.rowidMatchRule;
     this.savedMatchReport.rowidMatchSet = this.selectedMatchSet.rowidMatchSet;
+  }
 
+  private setMMatchColumnComponents() {
     let tempMatchCols = new Array();
     this.selectedMatchColumns.forEach(selectedMatchColumn => {tempMatchCols.push(new MMatchColumn(selectedMatchColumn.rowidMatchColumn))});
 
     if (this.mMatchReport.mmatchColumnComponents != undefined) {
       this.mMatchReport.mmatchColumnComponents.forEach(mmatchColumnComponent => {
         tempMatchCols.forEach(tempMatchCol => {
-          if (mmatchColumnComponent.mmatchColumn.rowidMatchColumn == tempMatchCol.rowidMatchColumn) {
+          if (mmatchColumnComponent.mmatchColumnComponentKey.rowidMmatchColumn == tempMatchCol.rowidMmatchColumn) {
             console.log("Match Column Found");
             this.savedMatchReport.mmatchColumnComponents.push(mmatchColumnComponent);
             tempMatchCols.splice(tempMatchCols.indexOf(tempMatchCol), 1);
@@ -243,23 +268,28 @@ export class CreateReportComponent implements OnInit {
         })
       });
     }
-    tempMatchCols.forEach(matchColumn => {this.savedMatchReport.mmatchColumnComponents.push(new MMatchColumnComponent(new MMatchColumn(matchColumn.rowidMatchColumn)))});
+    tempMatchCols.forEach(matchColumn => {this.savedMatchReport.mmatchColumnComponents.push(new MMatchColumnComponent(new MMatchColumn(matchColumn.rowidMmatchColumn)))});
+  }
 
+  private setMColumnComponents() {
     let tempCols = new Array();
+
     this.selectedColumns.forEach(selectedColumn => {tempCols.push(new MColumn(selectedColumn.rowidColumn))});
 
     if (this.mMatchReport.mcolumnComponents != undefined) {
       this.mMatchReport.mcolumnComponents.forEach(mcolumnComponent => {
         tempCols.forEach(tempCol => {
-          if (mcolumnComponent.mcolumn.rowidColumn == tempCol.rowidColumn) {
+          if (mcolumnComponent.mcolumnComponentKey.rowidMcolumn == tempCol.rowidMcolumn) {
             this.savedMatchReport.mcolumnComponents.push(mcolumnComponent);
             tempCols.splice(tempCols.indexOf(tempCol), 1);
           }
         })
       });
     }
-    tempCols.forEach(column => {this.savedMatchReport.mcolumnComponents.push(new MColumnComponent(new MColumn(column.rowidColumn)))});
+    console.log(tempCols);
+    tempCols.forEach(column => {this.savedMatchReport.mcolumnComponents.push(new MColumnComponent(new MColumn(column.rowidMcolumn)))});
   }
+
 
   protected validateAllInput() {
     if (this.matchReportName.nativeElement.value == '') {

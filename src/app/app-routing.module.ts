@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'matchReport', component: MatchReportComponent, canActivate: [AuthGuard]},
   { path: 'package-viewer', component: PackageViewerComponent, canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full'}
 ];
 
 @NgModule({

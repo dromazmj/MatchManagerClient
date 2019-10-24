@@ -1,11 +1,11 @@
 import { MMatchReport } from './mmatchreport.model';
 import { MColumn } from './mcolumn.model';
+import { MColumnComponentKey } from './keys/mcolumncomponentkey.model';
 
 export class MColumnComponent {
     constructor(mColumn: MColumn) {
-        this.mcolumn = mColumn;
+        this.mcolumnComponentKey = new MColumnComponentKey();
+        this.mcolumnComponentKey.rowidMcolumn = mColumn.rowidMcolumn;
     }
-    rowidColumnComponent: number;
-    mmatchReport: MMatchReport;
-    mcolumn: MColumn;
+    mcolumnComponentKey: MColumnComponentKey;
 }
