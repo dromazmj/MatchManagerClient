@@ -12,6 +12,7 @@ import { ChartsModule } from 'angular-bootstrap-md';
 import { MatchRowService } from '../shared/MatchRow/match-row.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material';
 
 
 export interface PeriodicElement {
@@ -48,7 +49,8 @@ export class MatchReportComponent implements OnInit {
 
   rows: any = [];
   columns: any = [];
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   // displayedColumns: string[] = ['name', 'weight', 'symbol', 'position'];
   displayedColumns: string[] = [];
 
@@ -80,10 +82,11 @@ export class MatchReportComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.cReposTableService.getBOCReposTables().subscribe(data => {
-      this.cReposTables = data;
-    });
+    // this.cReposTableService.getBOCReposTables().subscribe(data => {
+    //   this.cReposTables = data;
+    // });
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
 
@@ -123,6 +126,7 @@ export class MatchReportComponent implements OnInit {
     this.columnsToDisplay = this.columns.slice();
     this.data = data;
     this.dataSource.data = this.data;
+    this.dataSource.sort = this.sort;
     this.isLoadingResults = false;
   }
 

@@ -8,7 +8,7 @@ import { SiperianObject } from 'src/app/models/siperianobject.model';
 })
 export class SiperianObjectService {
 
-  private localUrl = "http://localhost:8034"
+  private localUrl = "http://localhost:8034";
 
   constructor(private http: HttpClient) { }
 
@@ -16,6 +16,6 @@ export class SiperianObjectService {
     return this.http.get<SiperianObject[]>(this.localUrl + `/siperianObjects?username=${username}&password=${password}`);
   }
   getPackageData(pkgName: string): Observable<any> {
-    return this.http.get<any>(`//localhost:8034/packageData?pkgName=${pkgName}`);
+    return this.http.get<any>(this.localUrl + `/packageData?pkgName=${pkgName}`);
   }
 }

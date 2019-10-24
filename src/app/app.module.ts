@@ -2,18 +2,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatCardModule } from '@angular/material/card';
-import { MatRippleModule } from '@angular/material/core';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule, MatCardModule, MatInputModule, MatListModule, MatToolbarModule, MatGridListModule, MatButtonToggleModule, MatRippleModule, MatSelectModule, MatTableModule, MatPaginator, MatPaginatorModule, MatProgressSpinnerModule, MatFormFieldModule, MatSortModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CReposTableService } from './shared/CReposTable/crepos-table.service';
@@ -40,6 +29,9 @@ import { DatatableComponent } from './datatable/datatable.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { DataTablesModule } from 'angular-datatables';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { Browser } from 'protractor';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -63,7 +55,9 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
     DatatableComponent,
   ],
   imports: [
-    BrowserAnimationsModule,
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -79,8 +73,10 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
     ScrollingModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSortModule,
     MatProgressSpinnerModule,
     NgbModule,
+    MatFormFieldModule,
     MatTableExporterModule,
     Ng4LoadingSpinnerModule,
     ChartsModule,

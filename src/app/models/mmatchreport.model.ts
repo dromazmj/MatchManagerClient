@@ -8,6 +8,7 @@ export class MMatchReport {
     rowidMatchRule: string;
     matchReportName: string;
     rowidUser: string;
+    valid: boolean;
 
     mmatchColumnComponents: MMatchColumnComponent[];
     mcolumnComponents: MColumnComponent[];

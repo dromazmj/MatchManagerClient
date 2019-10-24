@@ -11,8 +11,11 @@
   <div class="panel panel-transparent">
     <div class="panel-heading underline-heading">
       <h3 class="panel-title pull-left">Match Reports</h3>
+      <!-- <button class="btn btn-primary pull-right" style="bottom: 15px">Validate Match Reports</button> -->
     </div>
     <div class="panel-body">
+      
+
       <button class="btn btn-default pull-left" (click)="showMatchReport(content)">Show Match Report</button>
       <button class="btn btn-default pull-right" (click)="updateMatchReport(content)">Edit Match Report</button>
       <button class="btn btn-default pull-left" (click)="deleteMatchReport(content)">Delete Match Report</button>
@@ -25,6 +28,7 @@
           <!-- <mat-action-list *ngFor="let cReposTable of cReposTables"> -->
               <mat-button-toggle matRipple (click)="setSelectedMatchReport(mMatchReport)" *ngFor="let mMatchReport of mMatchReports">
                   {{mMatchReport.matchReportName}}
+                  <span class="badge badge-danger" *ngIf="!mMatchReport.valid">!</span>
               </mat-button-toggle>
           <!-- </mat-action-list> -->
             <!-- </div> -->

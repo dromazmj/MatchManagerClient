@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MMatchReportService } from '../shared/MMatchReport/mmatch-report.service';
 import { MMatchReport } from '../models/mmatchreport.model';
 import { AuthenticationService } from '../_service/authentication/authentication.service';
+import { SystemService } from '../shared/System/system.service';
 @Component({
   selector: 'app-match-report-list',
   templateUrl: './match-report-list.component.html',
@@ -19,12 +20,20 @@ export class MatchReportListComponent implements OnInit {
     private modalService: NgbModal,
     private mMatchReportService: MMatchReportService  ,
     private authenticationService: AuthenticationService,
+    private systemService: SystemService
   ) { }
 
   ngOnInit() {
-    this.mMatchReportService.getAllMatchReportServicesByUserId(this.authenticationService.currentUserValue.rowidUser).subscribe(mMatchReports => {
+    // this.mMatchReportService.getAllMatchReportServicesByUserId(this.authenticationService.currentUserValue.rowidUser).subscribe(mMatchReports => {
+    //   this.mMatchReports = mMatchReports;
+    // })
+    this.validateMMatchReports();
+  }
+
+  validateMMatchReports() {
+    this.systemService.validateMMatchReports().subscribe(mMatchReports => {
       this.mMatchReports = mMatchReports;
-    })
+    });
   }
 
   openCreateMatchReportModal(content) {
