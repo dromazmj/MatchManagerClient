@@ -19,6 +19,7 @@
           "options": {
             "outputPath": "dist/client",
             "index": "src/index.html",
+            "deployUrl": "/",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",

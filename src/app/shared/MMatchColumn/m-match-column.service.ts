@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { MColumnComponent } from 'src/app/models/mcolumncomponent.model';
 import { MMatchColumn } from 'src/app/models/mmatchcolumn.model';
 import { Injectable } from '@angular/core';
+import { UrlService } from 'src/app/_service/url/url.service';
 
 
 @Injectable({
@@ -11,9 +12,13 @@ import { Injectable } from '@angular/core';
 })
 export class MMatchColumnService {
 
-  constructor(private http: HttpClient) {} 
+  private localUrl: string;
+
+  constructor(private http: HttpClient, private urlService: UrlService) {
+    this.localUrl = this.urlService.getLocalUrl();
+  } 
 
   createMColumnComponent(mMatchColumn: MMatchColumn): Observable<MMatchColumn> {
-    return this.http.post<MMatchColumn>(`//localhost:8034/m-match-column`, mMatchColumn);
+    return this.http.post<MMatchColumn>(this.localUrl + `m-match-column`, mMatchColumn);
   }
 }

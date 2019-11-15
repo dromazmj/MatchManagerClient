@@ -3,6 +3,7 @@ import { MColumn } from 'src/app/models/mcolumn.model';
 import { Observable } from 'rxjs';
 import { MColumnComponent } from 'src/app/models/mcolumncomponent.model';
 import { Injectable } from '@angular/core';
+import { UrlService } from 'src/app/_service/url/url.service';
 
 
 @Injectable({
@@ -10,9 +11,13 @@ import { Injectable } from '@angular/core';
 })
 export class MColumnComponentService {
 
-  constructor(private http: HttpClient) {} 
+  private localUrl: string;
+
+  constructor(private http: HttpClient, private urlService: UrlService) {
+    this.localUrl = this.urlService.getLocalUrl();
+  } 
 
   createMColumnComponent(mColumnComponent: MColumnComponent): Observable<MColumnComponent> {
-    return this.http.post<MColumnComponent>(`//localhost:8034/m-column-component`, mColumnComponent);
+    return this.http.post<MColumnComponent>(this.localUrl + `m-column-component`, mColumnComponent);
   }
 }

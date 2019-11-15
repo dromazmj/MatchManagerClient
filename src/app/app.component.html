@@ -2,7 +2,7 @@
 <section role="workspaces" id="ipg2">
   <div class="useFloatPanel">
     <div id="main1 container">
-      <div class="infaWsTabs" style="overflow: auto; position: fixed; height: 900px; width: 200px;">
+      <div class="infaWsTabs" style="overflow: auto; position: fixed; height: 100%; width: 200px;">
           <app-sidebar></app-sidebar>
       </div>
       <div class="infaWSContents">
@@ -11,4 +11,4 @@
     </div>
   </div>
 </section>
-<ng4-loading-spinner [threshold]="0" [zIndex]="9999"> </ng4-loading-spinner>
+<ng4-loading-spinner [timeout]="100000" [zIndex]="9999"> </ng4-loading-spinner>

@@ -15,6 +15,7 @@ export class MatchReportListComponent implements OnInit {
   selectedMatchReport: MMatchReport;
 
   @Output() someEvent = new EventEmitter<MMatchReport>();
+  isLoadingResults: boolean = false;
 
   constructor(
     private modalService: NgbModal,
@@ -24,6 +25,7 @@ export class MatchReportListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.isLoadingResults = true;
     // this.mMatchReportService.getAllMatchReportServicesByUserId(this.authenticationService.currentUserValue.rowidUser).subscribe(mMatchReports => {
     //   this.mMatchReports = mMatchReports;
     // })
@@ -33,6 +35,7 @@ export class MatchReportListComponent implements OnInit {
   validateMMatchReports() {
     this.systemService.validateMMatchReports().subscribe(mMatchReports => {
       this.mMatchReports = mMatchReports;
+      this.isLoadingResults = false;
     });
   }
 
@@ -40,11 +43,16 @@ export class MatchReportListComponent implements OnInit {
     const createMatchReportConfig = this.modalService.open(content, {size: 'lg'}).result.then((result) => {
 
     }, (reason) => {
-
+        if (reason == "SUCCESS") {
+          this.validateMMatchReports();
+        }
     })
   }
 
   updateMatchReport(content) {
+    if (this.selectedMatchReport == undefined) {
+      alert("No Match Report Selected!"); return;
+    } 
     this.openCreateMatchReportModal(content);
   }
 
@@ -53,15 +61,18 @@ export class MatchReportListComponent implements OnInit {
     this.openCreateMatchReportModal(content);
   }
 
-  protected setSelectedMatchReport(mMatchReport) {
+  public setSelectedMatchReport(mMatchReport) {
     this.selectedMatchReport = mMatchReport;
   }
 
-  protected showMatchReport(mMatchReport) {
+  public showMatchReport(mMatchReport) {
     this.someEvent.next(this.selectedMatchReport);
   }
 
-  protected deleteMatchReport() {
+  public deleteMatchReport(content) {
+    if (this.selectedMatchReport == undefined) {
+      alert("No Match Report Selected!"); return;
+    } 
     this.mMatchReportService.deleteMatchReportService(this.selectedMatchReport.rowidMatchReport).subscribe(result => {
       location.reload();
     }, () => {

@@ -12,6 +12,10 @@
     </div>
     <div class="row">
       <div class='col-lg-12'>
+        <div class="example-loading-shade"
+          *ngIf="isLoadingResults">
+          <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        </div>
         <table datatable [dtOptions]="dtOptions" [dtTrigger]="tTrigger" class="row-border hover" style="width:100%">
           <thead>
             <tr>

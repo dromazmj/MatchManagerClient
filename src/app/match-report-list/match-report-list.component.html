@@ -1,7 +1,10 @@
 
-<ng-template #content let-c="close" let-d="dismiss" let-modal>
+<ng-template #content let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Create Report</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
       <app-create-report [mMatchReport]="selectedMatchReport"></app-create-report>
@@ -15,7 +18,10 @@
     </div>
     <div class="panel-body">
       
-
+      <div class="example-loading-shade"
+          *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+      </div>
       <button class="btn btn-default pull-left" (click)="showMatchReport(content)">Show Match Report</button>
       <button class="btn btn-default pull-right" (click)="updateMatchReport(content)">Edit Match Report</button>
       <button class="btn btn-default pull-left" (click)="deleteMatchReport(content)">Delete Match Report</button>

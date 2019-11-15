@@ -12,7 +12,7 @@ export class AuthenticationService {
 
   private currentUserSubject: BehaviorSubject<AuthenticationUser>;
   public currentUser: Observable<AuthenticationUser>;
-  private config = {apiUrl: "http://localhost:8034/"};
+  private config = {apiUrl: "http://localhost:8088/match-manager-1/"};
 
   constructor(private http: HttpClient) {
       this.currentUserSubject = new BehaviorSubject<AuthenticationUser>(JSON.parse(localStorage.getItem('currentUser')));

@@ -1,112 +1,90 @@
-<!-- 
-<div class="toolBarDiv">
-  <span class="toolBarTitle title-text ng-binding">
-    Create Reports
-  </span>
-</div> -->
-<!-- <div class="mdm-view-container"> -->
-  <div class='row'>
-    <div class='col-md-3'>
-      <button mat-button-raised class="btn btn-primary" (click)="saveReport()">Save Report</button>
-      <button mat-button-raised class="btn btn-primary" (click)="previewReport()">Preview Report</button>
-    </div>
-    <div class='col-md-3'>
+<div class='row'>
+  <div class='col-md-3'>
+    <button mat-button-raised class="btn btn-primary" (click)="saveReport()">Save Report</button>
+    <button mat-button-raised class="btn btn-primary" (click)="previewReport()">Preview Report</button>
+  </div>
+  <div class='col-md-3'>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Match Report Name" value="" #matchReportName>
+    </mat-form-field>
+  </div>
+</div>
+
+<form>
+  <div class="row">
+    <div class="col-md-2">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Match Report Name" value="" #matchReportName>
+        <mat-select  placeholder="Table Name" required name="rowidTable" [(ngModel)]="selectedTable">
+          <mat-option   class="modalSelect" *ngFor="let creposTable of creposTables" [value]="creposTable">
+            {{creposTable.tableName}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
-  </div>
-
-  <form (ngSubmit)="onSubmit()">
-    <div class="row">
-      <div class="col-md-2">
-        <mat-form-field class="example-full-width">
-          <mat-select  placeholder="Table Name" required name="rowidTable" [(ngModel)]="selectedTable">
-            <mat-option   class="modalSelect" *ngFor="let creposTable of creposTables" [value]="creposTable">
-              {{creposTable.tableName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-2">
-        <mat-form-field class="example-full-width">
-          <mat-select  placeholder="Match Set" required name="rowidMatchSet" [(ngModel)]="selectedMatchSet">
-            <mat-option *ngFor="let creposMatchSet of selectedTable.creposMatchSets" [value]="creposMatchSet">
-              {{creposMatchSet.matchSetName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-2">
-        <mat-form-field class="example-full-width">
-          <mat-select  placeholder="Match Rule" required name="rowidMatchRule" [(ngModel)]="selectedMatchRule">
-            <mat-option *ngFor="let creposMatchRule of selectedMatchSet.creposMatchRules" [value]="creposMatchRule" (onSelectionChange)="onSelectMatchRule($event)">
-              {{creposMatchRule.ruleNo}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-2">
-        <mat-form-field class="example-full-width">
-          <mat-select  placeholder="Columns" required name="rowidColumns" [(ngModel)]="selectedColumns" multiple>
-            <mat-option *ngFor="let creposColumn of selectedTable.creposColumns" [value]="creposColumn">
+    <div class="col-md-2">
+      <mat-form-field class="example-full-width">
+        <mat-select  placeholder="Match Set" required name="rowidMatchSet" [(ngModel)]="selectedMatchSet">
+          <mat-option *ngFor="let creposMatchSet of selectedTable.creposMatchSets" [value]="creposMatchSet">
+            {{creposMatchSet.matchSetName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field class="example-full-width">
+        <mat-select  placeholder="Match Rule" required name="rowidMatchRule" [(ngModel)]="selectedMatchRule">
+          <mat-option *ngFor="let creposMatchRule of selectedMatchSet.creposMatchRules" [value]="creposMatchRule" (onSelectionChange)="onSelectMatchRule($event)">
+            {{creposMatchRule.ruleNo}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field class="example-full-width">
+        <mat-select  placeholder="Columns" required name="rowidColumns" [(ngModel)]="selectedColumns" multiple>
+          <mat-option *ngFor="let creposColumn of selectedTable.creposColumns" [value]="creposColumn">
+            {{creposColumn.columnName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field class="example-full-width">
+        <mat-select  placeholder="Match Columns" required name="rowidMatchColumns" [(ngModel)]="selectedMatchColumns" multiple>
+          <mat-option *ngFor="let creposMatchColumn of creposMatchColumns" [value]="creposMatchColumn">
+            {{creposMatchColumn.matchColumnName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-2">
+      Columns In Match Columns
+      <mat-list> 
+        <mat-list-item *ngFor="let creposMatchColumn of selectedMatchColumns">
+          <mat-list>
+            <mat-list-item *ngFor="let creposColumn of creposMatchColumn.creposColumns">
               {{creposColumn.columnName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-2">
-        <mat-form-field class="example-full-width">
-          <mat-select  placeholder="Match Columns" required name="rowidMatchColumns" [(ngModel)]="selectedMatchColumns" multiple>
-            <mat-option *ngFor="let creposMatchColumn of creposMatchColumns" [value]="creposMatchColumn">
-              {{creposMatchColumn.matchColumnName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-md-2">
-        Columns In Match Columns
-        <mat-list> 
-          <mat-list-item *ngFor="let creposMatchColumn of selectedMatchColumns">
-            <mat-list>
-              <mat-list-item *ngFor="let creposColumn of creposMatchColumn.creposColumns">
-                {{creposColumn.columnName}}
-              </mat-list-item>
-            </mat-list>
-          </mat-list-item>
-        </mat-list>
-      </div>
+            </mat-list-item>
+          </mat-list>
+        </mat-list-item>
+      </mat-list>
     </div>
-  </form>
-  
-  <!-- <div class='row'>
-    <div class='col-md-3'>
-      <app-crepos-table-list [cReposTables]="cReposTables" (someEvent)="showMatchRuleSets($event)"></app-crepos-table-list>
-    </div>
-    <div class='col-md-3'>
-      <app-crepos-match-set-list [cReposMatchSets]="cReposMatchSets" (showMatchRulesEvent)="showMatchRules($event)"></app-crepos-match-set-list>
-    </div>
-    <div class='col-md-3'>
-      <app-crepos-match-rule-list [cReposMatchRules]="cReposMatchRules" (showMatchColumnsEvent)="showMatchColumns($event)"></app-crepos-match-rule-list>
-    </div>
-    <div class='col-md-3'>
-        <app-crepos-column-list [cReposColumns]="cReposColumns" [cReposMatchColumns]="cReposMatchColumns" (setSelectedMatchColumnsEvent)="setSelectedMatchColumns($event)" (setSelectedColumnsEvent)="setSelectedColumns($event)"></app-crepos-column-list>
-    </div>
-  </div> -->
-  <div class='row'>
-    <div class='col-lg'>
-        <table datatable [dtOptions]="dtOptions" [dtTrigger]="tTrigger" class="row-border hover">
-          <thead>
-            <tr>
-                <td *ngFor="let column of columns">{{column}}</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of rows">
-                <td *ngFor="let col of row">{{col}}</td>
-            </tr>
-          </tbody>
-        </table>
-    </div>
-  </div> 
-<!-- </div> -->
+  </div>
+</form>
+<div class='row'>
+  <div class='col-lg'>
+    
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="tTrigger" class="row-border hover">
+        <thead>
+          <tr>
+              <td *ngFor="let column of columns">{{column}}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows">
+              <td *ngFor="let col of row">{{col}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div> 

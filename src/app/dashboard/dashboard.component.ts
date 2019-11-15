@@ -39,6 +39,8 @@ export class DashboardComponent implements OnInit {
   public chartColors: Array<any> = [{backgroundColor: [], borderColor: [], borderWidth: 2 }];
   barChartheading: string = '';
 
+  isLoadingResults: boolean = false;
+
   // DATATABLE ATTRIBUTES
   cols: [{
     title: "Table",
@@ -73,6 +75,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.spinner.show();
+    this.isLoadingResults = true;
     this.creposTableService.getAllMatchTableData().subscribe(matchTablesData => {
       this.setBarChartData(matchTablesData);
       this.spinner.hide();
@@ -152,6 +155,7 @@ export class DashboardComponent implements OnInit {
         });
       }
     });
+    this.isLoadingResults = false;
     this.setDatatablesOptions();
     this.rows = rows;
     if (this.dtElement.dtInstance == undefined) {

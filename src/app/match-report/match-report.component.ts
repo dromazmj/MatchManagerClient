@@ -34,7 +34,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class MatchReportComponent implements OnInit {
 
-  title = 'Match 360';
   cReposTables : CReposTable[];
   cReposMatchSets : CReposMatchSet[];
   cReposMatchRules : CReposMatchRule[];
@@ -82,15 +81,12 @@ export class MatchReportComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.cReposTableService.getBOCReposTables().subscribe(data => {
-    //   this.cReposTables = data;
-    // });
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
 
-  private showMatchReport(mMatchReport: MMatchReport) {
+  public showMatchReport(mMatchReport: MMatchReport) {
     this.isLoadingResults = true;
     this.barChartheading = mMatchReport.matchReportName + " Bar Chart"
     this.pieChartheading = mMatchReport.matchReportName + " Pie Chart"

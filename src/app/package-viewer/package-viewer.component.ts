@@ -13,7 +13,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 })
 export class PackageViewerComponent implements OnInit {
 
-  private siperianObjects: SiperianObject[];
+  public siperianObjects: SiperianObject[];
   loading: boolean = false;
 
   @ViewChild(DataTableDirective, {static: false}) 
@@ -27,10 +27,11 @@ export class PackageViewerComponent implements OnInit {
 
   constructor(
     private siperianObjectService: SiperianObjectService,
-    private spinner: Ng4LoadingSpinnerService
+    private spinner: Ng4LoadingSpinnerService,
   ) { }
 
   ngOnInit() {
+    this.spinner.show();
     this.setSiperianObjectsApi();
     this.dtOptions = {
       // Declare the use of the extension in the dom parameter
@@ -55,7 +56,6 @@ export class PackageViewerComponent implements OnInit {
   }
 
   showPackage($event) {
-    console.log("HERE");
     this.loading = true;
     this.spinner.show();
     this.siperianObjectService.getPackageData($event.value.name).subscribe(data => {
@@ -87,8 +87,8 @@ export class PackageViewerComponent implements OnInit {
         alert("ERROR RETREIVING DATA. PLEASE LOOK OVER LOGS FOR ERRORS");
         return;
       }
-      console.log(siperianObjects);
       this.siperianObjects = siperianObjects;
+      this.spinner.hide();
     })
   }
 

@@ -18,6 +18,10 @@ import { MColumnService } from '../shared/MColumn/m-column.service';
 import { MColumnComponentService } from '../shared/MColumnComponent/m-column-component.service';
 import { MMatchColumnService } from '../shared/MMatchColumn/m-match-column.service';
 import { MMatchColumnComponentService } from '../shared/MMatchColumnComponent/m-match-column-component.service';
+import { Ng4LoadingSpinnerComponent, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { PeriodicElement } from '../match-report/match-report.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -45,10 +49,9 @@ export class CreateReportComponent implements OnInit {
 
   @ViewChild(DataTableDirective, {static: false}) dtElement: DataTableDirective;
   @ViewChild('matchReportName', {static: false}) matchReportName: ElementRef;
-
   @Input() mMatchReport: MMatchReport;
 
-  dtOptions: DataTables.Settings = {};
+  dtOptions: any = {};
   tTrigger: Subject<any> = new Subject();
 
   savedMatchReport: MMatchReport = new MMatchReport();
@@ -60,34 +63,53 @@ export class CreateReportComponent implements OnInit {
     private creposTableService: CReposTableService,
     private mMatchReportService: MMatchReportService,
     private authenticationService: AuthenticationService,
-    private mColumnService: MColumnService,
-    private mColumnComponentService: MColumnComponentService,
-    private mMatchColumnService: MMatchColumnService,
-    private mMatchColumnComponentService: MMatchColumnComponentService
+    private spinner: Ng4LoadingSpinnerService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
+    this.dtOptions = {
+      // Declare the use of the extension in the dom parameter
+      dom: 'Bfrtip',
+      // Configure the buttons
+      buttons: [
+        'copy',
+        'print',
+        'excel',
+        'pdf'
+      ],
+      colReorder: {
+        order: [],
+      },
+      drawCallback: (row: Node, data: any[] | Object, index: number) => {
+        this.spinner.hide();
+      },
+      responsive: true
+    };
+    this.spinner.show();
+    this.getBOCReposTables();
+  }
+
+  public getBOCReposTables() {
     this.creposTableService.getBOCReposTables().subscribe(data => {
+      this.spinner.hide();
       this.creposTables = data;
       if (this.mMatchReport == undefined) {
         this.mMatchReport = new MMatchReport();
       } else {
         this.setFormFields();
       }
-      this.mMatchReportService.getAllMatchReportServices().subscribe(data => {
-        console.log(data);
-      })
     });
-    this.tTrigger.next();
   }
 
-  protected setFormFields() {
+
+  public setFormFields() {
     this.updatingReport = true;
     this.setSelectedBaseObject();
     this.matchReportName.nativeElement.value = this.mMatchReport.matchReportName;
   }
 
-  protected setSelectedBaseObject() {
+  public setSelectedBaseObject() {
     
     this.creposTables.forEach(creposTable => {
       if (creposTable.rowidTable == this.mMatchReport.rowidTable) {
@@ -97,7 +119,7 @@ export class CreateReportComponent implements OnInit {
     this.setSelectedColumnsFromReport();
   }
 
-  protected setSelectedColumnsFromReport() {
+  public setSelectedColumnsFromReport() {
     this.creposColumns = this.selectedTable.creposColumns;
     this.mMatchReport.mcolumnComponents.forEach(mcolumnComponent => {
         this.selectedTable.creposColumns.forEach(creposColumn => {
@@ -109,7 +131,7 @@ export class CreateReportComponent implements OnInit {
     this.setSelectedMatchSetFromReport();
   }
 
-  protected setSelectedMatchSetFromReport() {
+  public setSelectedMatchSetFromReport() {
     this.creposMatchSets = this.selectedTable.creposMatchSets;
     this.selectedTable.creposMatchSets.forEach(creposMatchSet => {
       if (this.mMatchReport.rowidMatchSet == creposMatchSet.rowidMatchSet) {
@@ -119,7 +141,7 @@ export class CreateReportComponent implements OnInit {
     this.setSelectedMatchRuleFromReport();
   }
 
-  protected setSelectedMatchRuleFromReport() {
+  public setSelectedMatchRuleFromReport() {
     this.creposMatchRules = this.selectedMatchSet.creposMatchRules;
     this.selectedMatchSet.creposMatchRules.forEach(creposMatchRule => {
       if (this.mMatchReport.rowidMatchRule == creposMatchRule.rowidMatchRule) {
@@ -129,7 +151,7 @@ export class CreateReportComponent implements OnInit {
     this.setSelectedMatchColumnsFromReport();
   }
 
-  protected setSelectedMatchColumnsFromReport() {
+  public setSelectedMatchColumnsFromReport() {
     this.selectedMatchRule.creposMatchRuleComps.forEach(creposMatchRuleComp => {
       this.creposMatchColumns.push(creposMatchRuleComp.creposMatchColumn);
     });
@@ -139,8 +161,8 @@ export class CreateReportComponent implements OnInit {
           if (creposMatchRuleComp.creposMatchColumn.rowidMatchColumn == mmatchColumnComponent.mmatchColumnComponentKey.rowidMmatchColumn) {
             this.selectedMatchColumns.push(creposMatchRuleComp.creposMatchColumn);
           }
-        })
-    })
+        });
+    });
   }
 
   onSelectMatchRule(event) {
@@ -188,8 +210,15 @@ export class CreateReportComponent implements OnInit {
 
     matchCols = matchCols.substring(0, matchCols.length-1);
     this.creposTableService.getMatchDataWithMatchCol(this.selectedTable['tableName'], this.selectedMatchRule['rowidMatchRule'], cols, matchCols).subscribe(data => {
+      console.log(data);
       this.rows = data['data'];
       this.columns = data['columns'];
+      let i = 0;
+      this.dtOptions.colReorder.order = [];
+      this.columns.forEach(element => {
+        this.dtOptions.colReorder.order.push(i);
+        i++;
+      });
       if (this.dtElement.dtInstance == undefined) {
         this.tTrigger.next();
       }
@@ -199,13 +228,12 @@ export class CreateReportComponent implements OnInit {
         // Call the dtTrigger to rerender again
         this.tTrigger.next();
       });
-
     })
   }
 
 
 
-  protected saveReport() {
+  public saveReport() {
     if (this.validateAllInput() == false) {
       return;
     }
@@ -218,7 +246,9 @@ export class CreateReportComponent implements OnInit {
           alert("Error Submitting Match Report. Please contact your system administrator.");
         } else {
           alert("Match Report saved successfully.");
-          location.reload();
+          // location.reload();
+          this.modalService.dismissAll("SUCCESS");
+          
         }
       })
     } else {
@@ -227,7 +257,8 @@ export class CreateReportComponent implements OnInit {
           alert("Error Submitting Match Report. Please contact your system administrator.");
         } else {
           alert("Match Report saved successfully.");
-          location.reload();
+          // location.reload();
+          this.modalService.dismissAll("SUCCESS");
         }
     });
     }
@@ -288,6 +319,10 @@ export class CreateReportComponent implements OnInit {
     }
     console.log(tempCols);
     tempCols.forEach(column => {this.savedMatchReport.mcolumnComponents.push(new MColumnComponent(new MColumn(column.rowidMcolumn)))});
+  }
+
+  private setDtOptions() {
+    
   }
 
 
