@@ -56,7 +56,6 @@ export class DashboardComponent implements OnInit {
     data: 'numMatches'
   }]
 
-  // rows: any = [{'creposTable': '', 'creposMatchSet': '', 'creposMatchRule': '', 'numMatches': ''}];
   rows: any;
 
   @ViewChild(DataTableDirective, {static: false}) 
@@ -116,11 +115,13 @@ export class DashboardComponent implements OnInit {
     let newChartColors = [{backgroundColor: [], borderColor: [], borderWidth: 2 }];
     let newChartlabels = [];
     matchTablesData.forEach(element => {
-      newChartDatasets[0].data.push(element['count']);
-      newChartColors[0].backgroundColor.push(this.getRandomColor());
-      newChartColors[0].borderColor.push(this.getRandomColor());
-      newChartlabels.push(element['matchTableName']);
-      
+      // Only show BOs that have Match results
+      if (element['count']>0) {
+        newChartDatasets[0].data.push(element['count']);
+        newChartColors[0].backgroundColor.push(this.getRandomColor());
+        newChartColors[0].borderColor.push(this.getRandomColor());
+        newChartlabels.push(element['matchTableName']);
+      }
     });
     this.chartDatasets = newChartDatasets;
     this.chartColors = newChartColors;
@@ -195,9 +196,6 @@ export class DashboardComponent implements OnInit {
   }
 
   private initTable() {
-    // if (this.dtElement.dtInstance == undefined) {
-    //   this.tTrigger.next();
-    // }
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first
       dtInstance.destroy();

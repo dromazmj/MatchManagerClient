@@ -66,7 +66,7 @@ export class MatchReportComponent implements OnInit {
 
   public chartDatasets: Array<any> = [{data: [], label:["Match Rule Bar Chart"]}];  
 
-  public chartLabels: Array<any> = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Red1', 'Blue2', 'Yellow3', 'Green4', 'Purple5'];
+  public chartLabels: Array<any> = [];
 
   public chartColors: Array<any> = [{backgroundColor: [], borderColor: [], borderWidth: 2 }];
 
@@ -131,10 +131,13 @@ export class MatchReportComponent implements OnInit {
     let newChartColors = [{backgroundColor: [], borderColor: [], borderWidth: 2 }];
     let newChartlabels = []; 
     matchRuleChartData.forEach(element => {
-      newChartDatasets[0].data.push(element['value']);
-      newChartColors[0].backgroundColor.push(this.getRandomColor());
-      newChartColors[0].borderColor.push(this.getRandomColor());
-      newChartlabels.push(element['barName']);
+      //Only show bars that have a match results
+      if (element['value']>0) {
+        newChartDatasets[0].data.push(element['value']);
+        newChartColors[0].backgroundColor.push(this.getRandomColor());
+        newChartColors[0].borderColor.push(this.getRandomColor());
+        newChartlabels.push(element['barName']);
+      }
       
     });
     this.chartDatasets = newChartDatasets;
