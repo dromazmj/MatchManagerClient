@@ -97,6 +97,10 @@ export class MatchReportComponent implements OnInit {
       this.displayedColumns = this.columns;
       this.setupMatchData();
 
+    },(err) => {
+      this.isLoadingResults = false;
+      alert("ERROR: Unable to retrieve the Match Report results from the server."); 
+      return;
     });
 
     let rowidMatchSet = mMatchReport.rowidMatchSet;
