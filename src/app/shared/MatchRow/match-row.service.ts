@@ -32,4 +32,9 @@ export class MatchRowService {
     rowidMatchRule = rowidMatchRule.replace(/ /g, '%20');
     return this.http.get<MatchRow[]>(this.localUrl + `matchRows/matchRule?rowidTableBO=${rowidTableBO}&rowidMatchRule=${rowidMatchRule}`);
   }
+
+  getMatchRowCountByMatchRule(rowidTableBO, rowidMatchRule): Observable<any> {
+    rowidMatchRule = rowidMatchRule.replace(/ /g, '%20');
+    return this.http.get<any>(this.localUrl + `/matchRows/matchRule/count?rowidTableBO=${rowidTableBO}&rowidMatchRule=${rowidMatchRule}`);
+  }
 }

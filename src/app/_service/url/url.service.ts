@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class UrlService {
 
-  private localUrl: string = "http://localhost:8088/match-manager-1/";
+  private localUrl: string = "http://localhost:8088/";
 
   constructor() { }
 

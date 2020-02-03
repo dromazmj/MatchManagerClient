@@ -147,8 +147,8 @@ export class DashboardComponent implements OnInit {
             await creposMatchSet.creposMatchRules.forEach(async (creposMatchRule: CReposMatchRule) => {
               let row = {'creposTable': creposTable.tableName, 'creposMatchSet': '', 'creposMatchRule': '', 'numMatches': 0};
               row.creposMatchRule = creposMatchRule.ruleNo + ` : ${creposMatchRule.matchPurposeStr} (${creposMatchRule.matchLevelStr})`;
-              let matchRows = <MatchRow[]>await this.getMatchRowsByMatchRule(creposTable.rowidTable, creposMatchRule.rowidMatchRule);
-              row.numMatches = matchRows.length;
+              let matchRowCount = <number>await this.getMatchRowCountByMatchRule(creposTable.rowidTable, creposMatchRule.rowidMatchRule);
+              row.numMatches = matchRowCount;
               row.creposMatchSet = creposMatchSet.matchSetName;
               rows.push(row);
             });
@@ -182,6 +182,14 @@ export class DashboardComponent implements OnInit {
     return new Promise(resolve => {
       this.matchRowService.getMatchRowsByMatchRule(rowidTable, rowidMatchRule).subscribe((matchRows: MatchRow[]) => {
         resolve(matchRows);
+      })
+    })
+  }
+
+  private async getMatchRowCountByMatchRule(rowidTable: string, rowidMatchRule: string) {
+    return new Promise(resolve => {
+      this.matchRowService.getMatchRowCountByMatchRule(rowidTable, rowidMatchRule).subscribe((matchRowCount: number) => {
+        resolve(matchRowCount);
       })
     })
   }
