@@ -17,6 +17,6 @@ export class MColumnService {
   } 
 
   createMColumn(mColumn: MColumn): Observable<MColumn> {
-    return this.http.post<MColumn>(this.localUrl + `m-column`, mColumn);
+    return this.http.post<MColumn>(this.localUrl + `/m-column`, mColumn);
   }
 }

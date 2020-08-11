@@ -32,6 +32,12 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { Browser } from 'protractor';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EnvironmentServiceProvider } from './_service/environment/environment.service.provider';
+import { MatchReportTableComponent } from './match-report-table/match-report-table.component';
+import { MetaDataBaseObjectComponent } from './meta-data-base-object/meta-data-base-object.component';
+import { MetaDataMatchRuleSetComponent } from './meta-data-match-rule-set/meta-data-match-rule-set.component';
+import { MetaDataMatchRuleComponent } from './meta-data-match-rule/meta-data-match-rule.component';
+import { MatchManagerComponent } from './match-manager/match-manager.component';
 
 
 @NgModule({
@@ -53,6 +59,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LoginComponent,
     PackageViewerComponent,
     DatatableComponent,
+    MatchReportTableComponent,
+    MetaDataBaseObjectComponent,
+    MetaDataMatchRuleSetComponent,
+    MetaDataMatchRuleComponent,
+    MatchManagerComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,6 +97,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   providers: [
     CReposTableService,
+    EnvironmentServiceProvider,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

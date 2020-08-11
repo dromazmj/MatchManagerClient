@@ -20,6 +20,6 @@ export class MMatchColumnComponentService {
   } 
 
   createMColumnComponent(mMatchColumnComponent: MMatchColumn): Observable<MMatchColumnComponent> {
-    return this.http.post<MMatchColumnComponent>(this.localUrl + `m-match-column-component`, mMatchColumnComponent);
+    return this.http.post<MMatchColumnComponent>(this.localUrl + `/m-match-column-component`, mMatchColumnComponent);
   }
 }

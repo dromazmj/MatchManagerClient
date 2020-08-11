@@ -13,6 +13,9 @@ import { MatchRowService } from '../shared/MatchRow/match-row.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material';
+import { MatchDataService } from '../shared/MatchData/match-data.service';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
 
 
 export interface PeriodicElement {
@@ -50,14 +53,21 @@ export class MatchReportComponent implements OnInit {
   columns: any = [];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  // displayedColumns: string[] = ['name', 'weight', 'symbol', 'position'];
-  displayedColumns: string[] = [];
+  
 
+  displayedColumns: string[] = [];
   columnsToDisplay: string[] = this.displayedColumns.slice();
   data: PeriodicElement[] = ELEMENT_DATA;
   dataSource = new MatTableDataSource(this.data);
   isLoadingResults: boolean = false;
 
+
+  // NEW TABLE
+
+  @ViewChild(DataTableDirective, {static: false}) dtElement: DataTableDirective;
+  dtOptions: any = {};
+  dtTrigger: Subject<any> = new Subject();
+  //////////
 
 
   public pieChartDatasets: Array<any> = [
@@ -78,11 +88,34 @@ export class MatchReportComponent implements OnInit {
     private cReposTableService: CReposTableService,
     private mMatchReportService: MMatchReportService,
     private matchRowService: MatchRowService,
+    private matchDataService: MatchDataService
   ) { }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.initializeDtOptions();
+  }
+
+  initializeDtOptions() {
+    this.dtOptions = {
+      // Declare the use of the extension in the dom parameter
+      dom: 'Bfrtip',
+      // Configure the buttons
+      buttons: [
+        'copy',
+        'colvis',
+        'print',
+        'excel',
+      ],
+      colReorder: {
+        order: [],
+      },
+      drawCallback: (row: Node, data: any[] | Object, index: number) => {
+        this.isLoadingResults = false;
+      },
+      responsive: true
+    };
   }
 
 
@@ -90,13 +123,19 @@ export class MatchReportComponent implements OnInit {
     this.isLoadingResults = true;
     this.barChartheading = mMatchReport.matchReportName + " Bar Chart"
     this.pieChartheading = mMatchReport.matchReportName + " Pie Chart"
-    this.mMatchReportService.getMatchReportData(mMatchReport.rowidMatchReport).subscribe(data => {
+    this.matchDataService.getMatchDataFromRowidMatchReport(mMatchReport.rowidMatchReport).subscribe(data => {
 
       this.rows = data['data'];
       this.columns = data['columns'];
-      this.displayedColumns = this.columns;
-      this.setupMatchData();
-
+      let i = 0;
+      this.dtOptions.colReorder.order = [];
+      this.columns.forEach(element => {
+        this.dtOptions.colReorder.order.push(i);
+        i++;
+      });
+      this.render();
+      //this.isLoadingResults = false;
+      
     },(err) => {
       this.isLoadingResults = false;
       alert("ERROR: Unable to retrieve the Match Report results from the server."); 
@@ -112,6 +151,19 @@ export class MatchReportComponent implements OnInit {
       this.pieChartDatasets = [{data: [matchRuleChartData.matchRuleMatchCount, matchRuleChartData.totalMatchRuleCount]}];
     })
     
+  }
+
+  private render(): void {
+    if (this.dtElement.dtInstance == undefined) {
+      this.dtTrigger.next();
+    } else {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        // Destroy the table first
+        dtInstance.destroy();
+        // Call the dtTrigger to rerender again
+        this.dtTrigger.next();
+      });
+    }
   }
 
   private setupMatchData() {

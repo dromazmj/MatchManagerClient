@@ -18,31 +18,31 @@ export class MMatchReportService {
   }
 
   getAllMatchReportServices(): Observable<MMatchReport[]> {
-    return this.http.get<MMatchReport[]>(this.localUrl + 'MMatchReport');
+    return this.http.get<MMatchReport[]>(this.localUrl + '/MMatchReport');
   }
 
   getAllMatchReportServicesByUserId(userId): Observable<MMatchReport[]> {
-    return this.http.get<MMatchReport[]>(this.localUrl + `getAllMatchReportsByUser?userId=${userId}`);
+    return this.http.get<MMatchReport[]>(this.localUrl + `/getAllMatchReportsByUser?userId=${userId}`);
   }
 
   putMatchReportService(mMatchReport): Observable<MMatchReport> {
-    return this.http.put<MMatchReport>(this.localUrl + 'MMatchReport', mMatchReport);
+    return this.http.put<MMatchReport>(this.localUrl + '/MMatchReport', mMatchReport);
   }
 
   saveWithRollbackWithChildren(mMatchReport: MMatchReport): Observable<MMatchReport> {
-    return this.http.post<MMatchReport>(this.localUrl + "MMatchReportWithChildren", mMatchReport);
+    return this.http.post<MMatchReport>(this.localUrl + "/MMatchReportWithChildren", mMatchReport);
   }
 
   postMatchReportService(mMatchReport) {
-    return this.http.post<MMatchReport>(this.localUrl + 'MMatchReport', mMatchReport);
+    return this.http.post<MMatchReport>(this.localUrl + '/MMatchReport', mMatchReport);
   }
 
   deleteMatchReportService(mMatchReportRowid): Observable<any> {
-    return this.http.delete<any>(this.localUrl + `MMatchReport/${mMatchReportRowid}`);
+    return this.http.delete<any>(this.localUrl + `/MMatchReport/${mMatchReportRowid}`);
   }
 
   getMatchReportData(rowidMatchReport): Observable<any> {
-    return this.http.get<any>(this.localUrl + `getMatchReportData?rowidMatchReport=${rowidMatchReport}`)
+    return this.http.get<any>(this.localUrl + `/getMatchReportData?rowidMatchReport=${rowidMatchReport}`)
       .pipe(
         retry(2),
         catchError(this.handleError)

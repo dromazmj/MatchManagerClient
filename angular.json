@@ -17,15 +17,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/client",
+            "outputPath": "dist/angular",
             "index": "src/index.html",
-            "deployUrl": "/",
+            "deployUrl": "",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/env.js"
             ],
             "styles": [
               "src/styles.scss",
@@ -35,7 +36,7 @@
               "node_modules/angular-bootstrap-md/scss/mdb-free.scss",
               "node_modules/datatables.net-buttons-dt/css/buttons.dataTables.css",
               "node_modules/datatables.net-colreorder-dt/css/colReorder.dataTables.css",
-              "node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css",
+              "node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -49,7 +50,7 @@
               "node_modules/datatables.net-buttons/js/buttons.html5.js",
               "node_modules/datatables.net-buttons/js/buttons.print.js",
               "node_modules/datatables.net-colreorder/js/dataTables.colReorder.js",
-              "node_modules/datatables.net-responsive/js/dataTables.responsive.js",
+              "node_modules/datatables.net-responsive/js/dataTables.responsive.js"
             ],
             "es5BrowserSupport": true
           },

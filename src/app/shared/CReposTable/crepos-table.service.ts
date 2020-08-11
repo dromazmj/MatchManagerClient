@@ -18,11 +18,15 @@ export class CReposTableService {
   }
 
   public getBOCReposTables(): Observable<CReposTable[]> {
-    return this.http.get<CReposTable[]>(this.localUrl + 'getBOCReposTables');
+    return this.http.get<CReposTable[]>(this.localUrl + '/getBOCReposTables');
+  }
+
+  public getAllBOCReposTablesWithMatchRows(): Observable<CReposTable[]> {
+    return this.http.get<CReposTable[]>(this.localUrl + '/getAllBOCReposTablesWithMatchRows');
   }
 
   public getMatchData(table, rowidMatchRule, cols): Observable<MatchData> {
-    return this.http.get<MatchData>(this.localUrl + `getMatchData?table=${table}&rowidMatchRule=${rowidMatchRule}&cols=${cols.join(",")}`);
+    return this.http.get<MatchData>(this.localUrl + `/getMatchData?table=${table}&rowidMatchRule=${rowidMatchRule}&cols=${cols.join(",")}`);
 
     // let params = new HttpParams();
     // params = params.set('table', table);
@@ -33,11 +37,11 @@ export class CReposTableService {
 
   
   public getMatchDataWithMatchCol(table, rowidMatchRule, cols, matchCols): Observable<any> {
-    return this.http.get<any>(this.localUrl + `getMatchDataWithMatchCol?table=${table}&rowidMatchRule=${rowidMatchRule}&rowidMatchCols=${matchCols}&cols=${cols.join(",")}`);
+    return this.http.get<any>(this.localUrl + `/getMatchDataWithMatchCol?table=${table}&rowidMatchRule=${rowidMatchRule}&rowidMatchCols=${matchCols}&cols=${cols.join(",")}`);
   }
 
   public getAllMatchTableData(): Observable<MatchTableData[]> {
-    return this.http.get<MatchTableData[]>(this.localUrl + `getAllMatchTableData`);
+    return this.http.get<MatchTableData[]>(this.localUrl + `/getAllMatchTableData`);
   }
 }
 

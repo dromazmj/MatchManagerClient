@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthenticationUser } from 'src/app/models/authenticationuser.module';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { EnvironmentService } from '../environment/environment.service';
+import { UrlService } from '../url/url.service';
 
 
 @Injectable({
@@ -12,9 +14,13 @@ export class AuthenticationService {
 
   private currentUserSubject: BehaviorSubject<AuthenticationUser>;
   public currentUser: Observable<AuthenticationUser>;
-  private config = {apiUrl: "http://localhost:8088/"};
+  private config = {apiUrl: ""};
 
-  constructor(private http: HttpClient) {
+  constructor(
+      private http: HttpClient,
+      private urlService: UrlService     
+    ) {
+      this.config.apiUrl = this.urlService.getLocalUrl();
       this.currentUserSubject = new BehaviorSubject<AuthenticationUser>(JSON.parse(localStorage.getItem('currentUser')));
       this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -27,7 +33,7 @@ export class AuthenticationService {
       console.log("HERE");
       console.log(authUser);
       console.log(localStorage.getItem('currentUser'));
-      return this.http.post<AuthenticationUser>(`${this.config.apiUrl}login`, authUser)
+      return this.http.post<AuthenticationUser>(`${this.config.apiUrl}/login`, authUser)
           .pipe(map(user => {
               console.log(user);
               // login successful if there's a jwt token in the response

@@ -15,6 +15,6 @@ export class SystemService {
   }
 
   public validateMMatchReports(): Observable<MMatchReport[]> {
-    return this.http.get<MMatchReport[]>(this.localUrl + 'validate-match-reports');
+    return this.http.get<MMatchReport[]>(this.localUrl + '/validate-match-reports');
   }
 }

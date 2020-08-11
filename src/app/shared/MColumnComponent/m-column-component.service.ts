@@ -18,6 +18,6 @@ export class MColumnComponentService {
   } 
 
   createMColumnComponent(mColumnComponent: MColumnComponent): Observable<MColumnComponent> {
-    return this.http.post<MColumnComponent>(this.localUrl + `m-column-component`, mColumnComponent);
+    return this.http.post<MColumnComponent>(this.localUrl + `/m-column-component`, mColumnComponent);
   }
 }

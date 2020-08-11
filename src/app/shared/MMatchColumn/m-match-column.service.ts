@@ -19,6 +19,6 @@ export class MMatchColumnService {
   } 
 
   createMColumnComponent(mMatchColumn: MMatchColumn): Observable<MMatchColumn> {
-    return this.http.post<MMatchColumn>(this.localUrl + `m-match-column`, mMatchColumn);
+    return this.http.post<MMatchColumn>(this.localUrl + `/m-match-column`, mMatchColumn);
   }
 }

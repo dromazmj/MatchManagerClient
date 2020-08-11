@@ -22,6 +22,7 @@ import { Ng4LoadingSpinnerComponent, Ng4LoadingSpinnerService } from 'ng4-loadin
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { PeriodicElement } from '../match-report/match-report.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatchDataService } from '../shared/MatchData/match-data.service';
 
 
 @Component({
@@ -64,7 +65,8 @@ export class CreateReportComponent implements OnInit {
     private mMatchReportService: MMatchReportService,
     private authenticationService: AuthenticationService,
     private spinner: Ng4LoadingSpinnerService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private matchDataService: MatchDataService
   ) { }
 
   ngOnInit() {
@@ -91,7 +93,7 @@ export class CreateReportComponent implements OnInit {
   }
 
   public getBOCReposTables() {
-    this.creposTableService.getBOCReposTables().subscribe(data => {
+    this.creposTableService.getAllBOCReposTablesWithMatchRows().subscribe(data => {
       this.spinner.hide();
       this.creposTables = data;
       if (this.mMatchReport == undefined) {
@@ -207,10 +209,8 @@ export class CreateReportComponent implements OnInit {
     let matchCols = "";
     if (this.selectedColumns != undefined) this.selectedColumns.forEach((column) => {cols.push(column.columnName)});
     if (this.selectedMatchColumns != undefined) this.selectedMatchColumns.forEach((column) => {matchCols += column.rowidMatchColumn + ','});
-
     matchCols = matchCols.substring(0, matchCols.length-1);
-    this.creposTableService.getMatchDataWithMatchCol(this.selectedTable['tableName'], this.selectedMatchRule['rowidMatchRule'], cols, matchCols).subscribe(data => {
-      console.log(data);
+    this.matchDataService.getMatchData(this.selectedTable['rowidTable'], this.selectedMatchRule.rowidMatchRule).subscribe(data => {
       this.rows = data['data'];
       this.columns = data['columns'];
       let i = 0;

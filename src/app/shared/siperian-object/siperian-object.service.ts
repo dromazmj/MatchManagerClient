@@ -16,9 +16,9 @@ export class SiperianObjectService {
   }
 
   public getSiperianObjects(username: string, password: string): Observable<SiperianObject[]> {
-    return this.http.get<SiperianObject[]>(this.localUrl + `siperianObjects?username=${username}&password=${password}`);
+    return this.http.get<SiperianObject[]>(this.localUrl + `/siperianObjects?username=${username}&password=${password}`);
   }
   getPackageData(pkgName: string): Observable<any> {
-    return this.http.get<any>(this.localUrl + `packageData?pkgName=${pkgName}`);
+    return this.http.get<any>(this.localUrl + `/packageData?pkgName=${pkgName}`);
   }
 }

@@ -20,17 +20,17 @@ export class MatchRowService {
   }
 
   getMatchRuleChartData(rowidTableBO, rowidMatchRule): Observable<MatchRuleChartData> {
-    return this.http.get<MatchRuleChartData>(this.localUrl + `MatchTable/MatchRuleChartData?rowidTableBO=${rowidTableBO}&rowidMatchRule=${rowidMatchRule}`);
+    return this.http.get<MatchRuleChartData>(this.localUrl + `/MatchTable/MatchRuleChartData?rowidTableBO=${rowidTableBO}&rowidMatchRule=${rowidMatchRule}`);
   }
 
   getAllMatchRulesChartData(rowidTableBO, rowidMatchSet): Observable<MatchRulesChartData[]> {
     rowidMatchSet = rowidMatchSet.replace(/ /g, '%20');
-    return this.http.get<MatchRulesChartData[]>(this.localUrl + `MatchTable/AllMatchRulesChartData?rowidTableBO=${rowidTableBO}&rowidMatchSet=${rowidMatchSet}`);
+    return this.http.get<MatchRulesChartData[]>(this.localUrl + `/MatchTable/AllMatchRulesChartData?rowidTableBO=${rowidTableBO}&rowidMatchSet=${rowidMatchSet}`);
   }
 
   getMatchRowsByMatchRule(rowidTableBO, rowidMatchRule): Observable<MatchRow[]> {
     rowidMatchRule = rowidMatchRule.replace(/ /g, '%20');
-    return this.http.get<MatchRow[]>(this.localUrl + `matchRows/matchRule?rowidTableBO=${rowidTableBO}&rowidMatchRule=${rowidMatchRule}`);
+    return this.http.get<MatchRow[]>(this.localUrl + `/matchRows/matchRule?rowidTableBO=${rowidTableBO}&rowidMatchRule=${rowidMatchRule}`);
   }
 
   getMatchRowCountByMatchRule(rowidTableBO, rowidMatchRule): Observable<any> {
