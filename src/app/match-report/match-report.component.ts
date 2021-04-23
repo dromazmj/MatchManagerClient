@@ -64,7 +64,7 @@ export class MatchReportComponent implements OnInit {
 
   // NEW TABLE
 
-  @ViewChild(DataTableDirective, {static: false}) dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   dtOptions: any = {};
   dtTrigger: Subject<any> = new Subject();
   //////////

@@ -11,7 +11,7 @@ export class DatatableComponent implements OnInit {
   @Input() rows: any = [{'creposTable': '', 'creposMatchSet': '', 'creposMatchRule': '', 'numMatches': ''}];
   @Input() cols: any = [];
 
-  @ViewChild(DataTableDirective, {static: false}) 
+  @ViewChild(DataTableDirective) 
   dtElement: DataTableDirective;
 
   dtOptions: any = {};

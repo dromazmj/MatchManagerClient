@@ -48,8 +48,8 @@ export class CreateReportComponent implements OnInit {
   updatingReport: boolean = false;
 
 
-  @ViewChild(DataTableDirective, {static: false}) dtElement: DataTableDirective;
-  @ViewChild('matchReportName', {static: false}) matchReportName: ElementRef;
+  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
+  @ViewChild('matchReportName') matchReportName: ElementRef;
   @Input() mMatchReport: MMatchReport;
 
   dtOptions: any = {};

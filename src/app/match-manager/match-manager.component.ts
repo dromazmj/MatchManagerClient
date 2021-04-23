@@ -20,7 +20,7 @@ export class MatchManagerComponent implements OnInit {
 
     // NEW TABLE
 
-  @ViewChild(DataTableDirective, {static: false}) dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
   dtTrigger: Subject<any> = new Subject();
   public dtOptions: any = {};
 

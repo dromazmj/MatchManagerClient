@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit {
 
   rows: any;
 
-  @ViewChild(DataTableDirective, {static: false}) 
+  @ViewChild(DataTableDirective) 
   dtElement: DataTableDirective;
 
   dtOptions: any = {};
