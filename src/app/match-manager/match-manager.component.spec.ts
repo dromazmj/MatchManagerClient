@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MatchManagerComponent } from './match-manager.component';
 
@@ -6,7 +6,7 @@ describe('MatchManagerComponent', () => {
   let component: MatchManagerComponent;
   let fixture: ComponentFixture<MatchManagerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MatchManagerComponent ]
     })

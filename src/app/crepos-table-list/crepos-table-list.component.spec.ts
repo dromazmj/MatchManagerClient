@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CReposTableListComponent } from './crepos-table-list.component';
 
@@ -6,7 +6,7 @@ describe('CReposTableListComponent', () => {
   let component: CReposTableListComponent;
   let fixture: ComponentFixture<CReposTableListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CReposTableListComponent ]
     })

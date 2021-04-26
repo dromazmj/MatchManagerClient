@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MetaDataBaseObjectComponent } from './meta-data-base-object.component';
 
@@ -6,7 +6,7 @@ describe('MetaDataBaseObjectComponent', () => {
   let component: MetaDataBaseObjectComponent;
   let fixture: ComponentFixture<MetaDataBaseObjectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MetaDataBaseObjectComponent ]
     })

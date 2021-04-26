@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MetaDataMatchRuleComponent } from './meta-data-match-rule.component';
 
@@ -6,7 +6,7 @@ describe('MetaDataMatchRuleComponent', () => {
   let component: MetaDataMatchRuleComponent;
   let fixture: ComponentFixture<MetaDataMatchRuleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MetaDataMatchRuleComponent ]
     })
