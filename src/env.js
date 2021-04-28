@@ -2,7 +2,7 @@
     window.__env = window.__env || {};
   
     // API url
-    window.__env.apiUrl = 'http://localhost:8081';
+    window.__env.apiUrl = 'http://localhost:8090/match-manager-1';
   
     // Whether or not to enable debug mode
     // Setting this to false will disable console output

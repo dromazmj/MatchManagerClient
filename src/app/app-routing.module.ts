@@ -8,13 +8,11 @@ import { CreateReportComponent } from './create-report/create-report.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guard/auth.guard';
 import { PackageViewerComponent } from './package-viewer/package-viewer.component';
-import { MatchManagerComponent } from './match-manager/match-manager.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   { path: 'createReport', component: CreateReportComponent, canActivate: [AuthGuard]},
   { path: 'matchReport', component: MatchReportComponent},
-  { path: 'match-manager', component: MatchManagerComponent, canActivate: [AuthGuard]},
   { path: 'package-viewer', component: PackageViewerComponent, canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/match-manager', pathMatch: 'full'}

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CReposMatchRule } from 'src/app/models/creposmatchrule.model';
 import { CReposMatchSet } from 'src/app/models/creposmatchset.model';
 import { CReposTable } from 'src/app/models/crepostable.model';
+import { MMatchReport } from 'src/app/models/mmatchreport.model';
 import { CReposTableService } from 'src/app/shared/CReposTable/crepos-table.service';
 
 @Component({
@@ -10,6 +11,8 @@ import { CReposTableService } from 'src/app/shared/CReposTable/crepos-table.serv
   styleUrls: ['./report-form.component.sass']
 })
 export class ReportFormComponent implements OnInit {
+  @Output() createReportEvent: EventEmitter<any> = new EventEmitter<any>();
+
   creposTables : CReposTable[];
   creposMatchSets : CReposMatchSet[];
   creposMatchRules : CReposMatchRule[];
@@ -20,6 +23,7 @@ export class ReportFormComponent implements OnInit {
 
   updatingReport: boolean = false;
 
+
   constructor(
     private creposTableService: CReposTableService,
   ) { }
@@ -29,7 +33,12 @@ export class ReportFormComponent implements OnInit {
   }
 
   createReport() {
+    let mMatchReport = new MMatchReport();
+    mMatchReport.rowidMatchRule = this.selectedMatchRule.rowidMatchRule;
+    mMatchReport.rowidTable = this.selectedTable.rowidTable;
+    mMatchReport.rowidMatchSet = this.selectedMatchSet.rowidMatchSet;
 
+    this.createReportEvent.next(mMatchReport);
   }
 
   public getBOCReposTables() {

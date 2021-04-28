@@ -3,7 +3,6 @@ import { SiperianObject } from '../models/siperianobject.model';
 import { SiperianObjectService } from '../shared/siperian-object/siperian-object.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
-import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 
 @Component({
@@ -27,11 +26,9 @@ export class PackageViewerComponent implements OnInit {
 
   constructor(
     private siperianObjectService: SiperianObjectService,
-    private spinner: Ng4LoadingSpinnerService,
   ) { }
 
   ngOnInit() {
-    this.spinner.show();
     this.setSiperianObjectsApi();
     this.dtOptions = {
       // Declare the use of the extension in the dom parameter
@@ -48,7 +45,6 @@ export class PackageViewerComponent implements OnInit {
         // fixedColumnsRight: 2
       },
       drawCallback: (row: Node, data: any[] | Object, index: number) => {
-        this.spinner.hide();
         this.loading = false;
       },
       responsive: true
@@ -57,7 +53,6 @@ export class PackageViewerComponent implements OnInit {
 
   showPackage($event) {
     this.loading = true;
-    this.spinner.show();
     this.siperianObjectService.getPackageData($event.value.name).subscribe(data => {
       this.rows = data['data'];
       this.columns = data['columns'];
@@ -88,7 +83,6 @@ export class PackageViewerComponent implements OnInit {
         return;
       }
       this.siperianObjects = siperianObjects;
-      this.spinner.hide();
     })
   }
 

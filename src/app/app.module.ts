@@ -2,7 +2,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MatButtonModule, MatCardModule, MatInputModule, MatListModule, MatToolbarModule, MatGridListModule, MatButtonToggleModule, MatRippleModule, MatSelectModule, MatTableModule, MatPaginator, MatPaginatorModule, MatProgressSpinnerModule, MatFormFieldModule, MatSortModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CReposTableService } from './shared/CReposTable/crepos-table.service';
@@ -18,7 +17,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CreateReportComponent } from './create-report/create-report.component';
 import { MatchReportListComponent } from './match-report-list/match-report-list.component';
 import { NgModule } from '@angular/core';
-import { ChartsModule, WavesModule, MDBBootstrapModule } from 'angular-bootstrap-md';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { DoughnutChartComponent } from './doughnut-chart/doughnut-chart.component';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
@@ -27,17 +25,26 @@ import { JwtInterceptor } from './_service/jwt.interceptor';
 import { PackageViewerComponent } from './package-viewer/package-viewer.component';
 import { DatatableComponent } from './datatable/datatable.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
-import { DataTablesModule } from 'angular-datatables';
-import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { Browser } from 'protractor';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EnvironmentServiceProvider } from './_service/environment/environment.service.provider';
-import { MatchReportTableComponent } from './match-report-table/match-report-table.component';
-import { MetaDataBaseObjectComponent } from './meta-data-base-object/meta-data-base-object.component';
-import { MetaDataMatchRuleSetComponent } from './meta-data-match-rule-set/meta-data-match-rule-set.component';
-import { MetaDataMatchRuleComponent } from './meta-data-match-rule/meta-data-match-rule.component';
-import { MatchManagerComponent } from './match-manager/match-manager.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatRippleModule } from '@angular/material/core';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { DataTablesModule } from 'angular-datatables';
+import { ReportFormComponent } from './match-report/report-form/report-form.component';
 
 
 @NgModule({
@@ -59,11 +66,7 @@ import { MatchManagerComponent } from './match-manager/match-manager.component';
     LoginComponent,
     PackageViewerComponent,
     DatatableComponent,
-    MatchReportTableComponent,
-    MetaDataBaseObjectComponent,
-    MetaDataMatchRuleSetComponent,
-    MetaDataMatchRuleComponent,
-    MatchManagerComponent,
+    ReportFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,7 +83,6 @@ import { MatchManagerComponent } from './match-manager/match-manager.component';
     MatListModule,
     MatToolbarModule,
     MatRippleModule,
-    MatGridListModule,
     ScrollingModule,
     MatTableModule,
     MatPaginatorModule,
@@ -88,11 +90,8 @@ import { MatchManagerComponent } from './match-manager/match-manager.component';
     MatProgressSpinnerModule,
     NgbModule,
     MatFormFieldModule,
-    MatTableExporterModule,
-    Ng4LoadingSpinnerModule,
-    ChartsModule,
     DataTablesModule,
-    WavesModule,
+    MatTableExporterModule,
     MDBBootstrapModule.forRoot()
   ],
   providers: [

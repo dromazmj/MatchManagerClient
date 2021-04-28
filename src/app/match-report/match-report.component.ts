@@ -12,10 +12,10 @@ import { ChartsModule } from 'angular-bootstrap-md';
 import { MatchRowService } from '../shared/MatchRow/match-row.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material';
 import { MatchDataService } from '../shared/MatchData/match-data.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { MatSort } from '@angular/material/sort';
 
 
 export interface PeriodicElement {
@@ -64,7 +64,8 @@ export class MatchReportComponent implements OnInit {
 
   // NEW TABLE
 
-  @ViewChild(DataTableDirective) dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement: DataTableDirective;
   dtOptions: any = {};
   dtTrigger: Subject<any> = new Subject();
   //////////
@@ -94,13 +95,19 @@ export class MatchReportComponent implements OnInit {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    
+  }
+
+  ngAfterViewInit(): void {
     this.initializeDtOptions();
+    // this.dtTrigger.next();
   }
 
   initializeDtOptions() {
     this.dtOptions = {
       // Declare the use of the extension in the dom parameter
       dom: 'Bfrtip',
+      pagingType: 'full_numbers',
       // Configure the buttons
       buttons: [
         'copy',
@@ -110,6 +117,7 @@ export class MatchReportComponent implements OnInit {
       ],
       colReorder: {
         order: [],
+        fixedColumnsRight: 2
       },
       drawCallback: (row: Node, data: any[] | Object, index: number) => {
         this.isLoadingResults = false;
@@ -123,13 +131,16 @@ export class MatchReportComponent implements OnInit {
     this.isLoadingResults = true;
     this.barChartheading = mMatchReport.matchReportName + " Bar Chart"
     this.pieChartheading = mMatchReport.matchReportName + " Pie Chart"
-    this.matchDataService.getMatchDataFromRowidMatchReport(mMatchReport.rowidMatchReport).subscribe(data => {
+    this.matchDataService.getMatchData(mMatchReport.rowidTable, mMatchReport.rowidMatchRule).subscribe(data => {
 
       this.rows = data['data'];
       this.columns = data['columns'];
+      this.dtOptions.data = this.rows;
+      this.dtOptions.columns = [];
       let i = 0;
       this.dtOptions.colReorder.order = [];
       this.columns.forEach(element => {
+        this.dtOptions.columns.push({"title": element})
         this.dtOptions.colReorder.order.push(i);
         i++;
       });
@@ -154,14 +165,18 @@ export class MatchReportComponent implements OnInit {
   }
 
   private render(): void {
-    if (this.dtElement.dtInstance == undefined) {
+    if (this.dtElement.dtInstance == undefined) { 
       this.dtTrigger.next();
     } else {
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        console.log("DESTROY")
         // Destroy the table first
         dtInstance.destroy();
+        dtInstance.columns.adjust().draw();
+        dtInstance.draw();
         // Call the dtTrigger to rerender again
         this.dtTrigger.next();
+        dtInstance.columns.adjust().draw();
       });
     }
   }

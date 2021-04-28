@@ -18,8 +18,6 @@ import { MColumnService } from '../shared/MColumn/m-column.service';
 import { MColumnComponentService } from '../shared/MColumnComponent/m-column-component.service';
 import { MMatchColumnService } from '../shared/MMatchColumn/m-match-column.service';
 import { MMatchColumnComponentService } from '../shared/MMatchColumnComponent/m-match-column-component.service';
-import { Ng4LoadingSpinnerComponent, Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { PeriodicElement } from '../match-report/match-report.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatchDataService } from '../shared/MatchData/match-data.service';
@@ -64,7 +62,6 @@ export class CreateReportComponent implements OnInit {
     private creposTableService: CReposTableService,
     private mMatchReportService: MMatchReportService,
     private authenticationService: AuthenticationService,
-    private spinner: Ng4LoadingSpinnerService,
     private modalService: NgbModal,
     private matchDataService: MatchDataService
   ) { }
@@ -84,17 +81,14 @@ export class CreateReportComponent implements OnInit {
         order: [],
       },
       drawCallback: (row: Node, data: any[] | Object, index: number) => {
-        this.spinner.hide();
       },
       responsive: true
     };
-    this.spinner.show();
     this.getBOCReposTables();
   }
 
   public getBOCReposTables() {
     this.creposTableService.getAllBOCReposTablesWithMatchRows().subscribe(data => {
-      this.spinner.hide();
       this.creposTables = data;
       if (this.mMatchReport == undefined) {
         this.mMatchReport = new MMatchReport();
